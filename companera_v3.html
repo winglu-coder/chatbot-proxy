@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compañera · TWIN-CS Thought Partner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal:    #1a5c5c;
+      --teal-lt: #2a8080;
+      --gold:    #c9902c;
+      --gold-lt: #e8b84b;
+      --cream:   #f7f4ef;
+      --warm:    #ede8de;
+      --rust:    #7a3520;
+      --text:    #1e1e1e;
+      --muted:   #5e6b5e;
+      --white:   #ffffff;
+      --radius:  12px;
+      --shadow:  0 4px 24px rgba(26,92,92,.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); }
+
+    /* ── SPLASH ── */
+    #splash {
+      position: fixed; inset: 0;
+      background: var(--teal);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.4rem; z-index: 100;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    #splash.hidden { opacity: 0; visibility: hidden; }
+    .splash-logo {
+      width: 72px; height: 72px; background: var(--gold);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white);
+      box-shadow: 0 0 0 8px rgba(201,144,44,.25);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 8px rgba(201,144,44,.25); }
+      50%      { box-shadow: 0 0 0 16px rgba(201,144,44,.08); }
+    }
+    .splash-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,3rem); color: var(--white); letter-spacing: .02em; }
+    .splash-subtitle { font-size: .95rem; color: rgba(255,255,255,.65); text-align: center; max-width: 440px; line-height: 1.6; padding: 0 1.5rem; }
+    .btn-start {
+      padding: .8rem 2.5rem; background: var(--gold); color: var(--white);
+      border: none; cursor: pointer; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; letter-spacing: .04em;
+      transition: background .2s, transform .1s;
+    }
+    .btn-start:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── APP ── */
+    #app { height: 100vh; display: flex; flex-direction: column; max-width: 820px; margin: 0 auto; }
+
+    header {
+      background: var(--teal); color: var(--white);
+      padding: 1rem 1.5rem .9rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-shrink: 0; box-shadow: 0 2px 12px rgba(26,92,92,.25);
+    }
+    .header-icon {
+      width: 42px; height: 42px; background: var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white); flex-shrink: 0;
+    }
+    .header-text h1 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; line-height: 1.2; }
+    .header-text p { font-size: .75rem; color: rgba(255,255,255,.6); margin-top: .15rem; }
+    .header-actions { margin-left: auto; display: flex; gap: .5rem; }
+    .btn-icon {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: var(--white); border-radius: 6px; padding: .4rem .75rem;
+      font-size: .78rem; cursor: pointer; transition: background .2s;
+    }
+    .btn-icon:hover { background: rgba(255,255,255,.2); }
+
+    #phase-bar {
+      background: var(--warm); border-bottom: 1px solid rgba(201,144,44,.25);
+      display: flex; flex-shrink: 0; overflow: hidden;
+    }
+    .phase-btn {
+      flex: 1; padding: .65rem .5rem; border: none; background: transparent;
+      font-size: .8rem; font-weight: 600; color: var(--muted); cursor: pointer;
+      letter-spacing: .04em; text-transform: uppercase;
+      border-bottom: 3px solid transparent;
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .phase-btn.active { color: var(--teal); border-bottom-color: var(--gold); background: rgba(201,144,44,.08); }
+    .phase-btn:hover:not(.active) { color: var(--teal); background: rgba(201,144,44,.05); }
+
+    #phase-card {
+      padding: .9rem 1.5rem; background: var(--white);
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      font-size: .88rem; color: var(--muted); line-height: 1.55; flex-shrink: 0;
+    }
+    #phase-card strong { color: var(--teal); }
+
+    #role-bar {
+      background: var(--white); border-bottom: 1px solid rgba(0,0,0,.07);
+      padding: .55rem 1.5rem; display: flex; align-items: center; gap: .6rem;
+      flex-shrink: 0; flex-wrap: wrap;
+    }
+    .role-label { font-size: .75rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .role-chip {
+      padding: .3rem .8rem; border-radius: 20px; border: 1.5px solid rgba(26,92,92,.2);
+      background: transparent; font-size: .78rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .2s;
+    }
+    .role-chip.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
+    .role-chip:hover:not(.active) { border-color: var(--teal); color: var(--teal); }
+
+    #chat-container {
+      flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem; scroll-behavior: smooth;
+    }
+    #chat-container::-webkit-scrollbar { width: 6px; }
+    #chat-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+    .welcome-card { background: var(--teal); color: var(--white); border-radius: var(--radius); padding: 1.5rem; line-height: 1.65; }
+    .welcome-card h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: .5rem; }
+    .welcome-card p { font-size: .9rem; color: rgba(255,255,255,.8); }
+    .prompt-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; }
+    .prompt-chip {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.9); padding: .45rem .9rem; border-radius: 20px;
+      font-size: .8rem; cursor: pointer; transition: background .2s;
+    }
+    .prompt-chip:hover { background: rgba(255,255,255,.2); }
+
+    .msg { display: flex; gap: .7rem; animation: fadeUp .25s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; flex-shrink: 0;
+    }
+    .msg.assistant .msg-avatar { background: var(--gold); color: var(--white); }
+    .msg.user .msg-avatar { background: var(--teal); color: var(--white); }
+    .msg-bubble { max-width: 78%; padding: .75rem 1rem; border-radius: var(--radius); font-size: .9rem; line-height: 1.6; }
+    .msg.assistant .msg-bubble { background: var(--white); box-shadow: var(--shadow); border-bottom-left-radius: 3px; }
+    .msg.user .msg-bubble { background: var(--teal); color: var(--white); border-bottom-right-radius: 3px; }
+    .msg-bubble p + p { margin-top: .5rem; }
+    .msg-bubble ul, .msg-bubble ol { padding-left: 1.2rem; margin-top: .4rem; }
+    .msg-bubble li { margin-bottom: .25rem; }
+    .msg-bubble strong { font-weight: 600; }
+    .msg-bubble em { font-style: italic; }
+
+    .typing-dots { display: flex; gap: 4px; align-items: center; padding: .5rem 0; }
+    .typing-dots span { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; animation: blink 1.2s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink { 0%,80%,100% { opacity:.25; transform:scale(.8); } 40% { opacity:1; transform:scale(1); } }
+
+    #input-area {
+      flex-shrink: 0; padding: .9rem 1.5rem 1rem; background: var(--white);
+      border-top: 1px solid rgba(0,0,0,.08); display: flex; gap: .7rem; align-items: flex-end;
+    }
+    #user-input {
+      flex: 1; padding: .65rem .95rem; border: 1.5px solid rgba(26,92,92,.2);
+      border-radius: 10px; font-family: inherit; font-size: .9rem;
+      resize: none; min-height: 44px; max-height: 140px; outline: none;
+      background: var(--cream); color: var(--text); transition: border-color .2s;
+    }
+    #user-input:focus { border-color: var(--gold); }
+    #send-btn {
+      width: 44px; height: 44px; background: var(--teal); border: none; border-radius: 10px;
+      color: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .1s; flex-shrink: 0;
+    }
+    #send-btn:hover { background: var(--gold); transform: scale(1.05); }
+    #send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    #send-btn svg { width: 18px; height: 18px; }
+
+    footer {
+      text-align: center; font-size: .72rem; color: var(--muted);
+      padding: .4rem 1rem .6rem; background: var(--warm);
+      border-top: 1px solid rgba(0,0,0,.06); flex-shrink: 0;
+    }
+
+    #save-toast {
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%);
+      background: var(--teal); color: var(--white); padding: .6rem 1.5rem;
+      border-radius: 20px; font-size: .85rem; opacity: 0;
+      transition: opacity .3s; pointer-events: none; z-index: 50;
+    }
+    #save-toast.show { opacity: 1; }
+
+    @media (max-width: 500px) {
+      header, #chat-container, #input-area, #role-bar, #phase-card { padding-left: 1rem; padding-right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">C</div>
+  <h1 class="splash-title">Compañera</h1>
+  <p class="splash-subtitle">
+    Your bilingual thought partner for exploring formative education in TWIN-CS dual language Catholic schools — grounded in the <em>Pedagogies of Character Formation Handbook</em>.
+  </p>
+  <button class="btn-start" id="btn-begin">Begin · Comenzar</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="header-icon">C</div>
+    <div class="header-text">
+      <h1>Compañera</h1>
+      <p>TWIN-CS · Thought Partner for Formative Education</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-save">Save conversation</button>
+      <button class="btn-icon" id="btn-reset">New Chat</button>
+    </div>
+  </header>
+
+  <div id="phase-bar">
+    <button class="phase-btn active" data-phase="0">Encounter</button>
+    <button class="phase-btn" data-phase="1">Examine</button>
+    <button class="phase-btn" data-phase="2">Envision</button>
+    <button class="phase-btn" data-phase="3">Commit</button>
+  </div>
+
+  <div id="phase-card"></div>
+
+  <div id="role-bar">
+    <span class="role-label">I am a</span>
+    <button class="role-chip active" data-role="Teacher">Teacher</button>
+    <button class="role-chip" data-role="Coach / Mentor">Coach / Mentor</button>
+    <button class="role-chip" data-role="Administrator">Administrator</button>
+    <button class="role-chip" data-role="Graduate Student">Graduate Student</button>
+  </div>
+
+  <div id="chat-container"></div>
+
+  <div id="input-area">
+    <textarea id="user-input" rows="1" placeholder="Ask about character formation, virtues, dual language education…"></textarea>
+    <button id="send-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <footer>
+    Roche Center for Catholic Education · Boston College Lynch School of Education &nbsp;|&nbsp; TWIN-CS Research Project
+  </footer>
+</div>
+
+<div id="save-toast">Conversation saved!</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   PROXY ENDPOINT — set this to your Vercel deployment URL
+   e.g. https://your-project.vercel.app/api/chat
+═══════════════════════════════════════════════════════════ */
+const PROXY_URL = 'REPLACE_WITH_YOUR_VERCEL_URL/api/chat';
+
+/* ═══════════════════════════════════════════════════════════
+   TWIN-CS KNOWLEDGE BASE
+═══════════════════════════════════════════════════════════ */
+const TWINCS_KNOWLEDGE = `
+# TWIN-CS Network — Pedagogies of Character Formation
+
+## WHAT IS TWIN-CS?
+TWIN-CS (Two-Way Immersion Network for Catholic Schools) is a network of Catholic schools in the United States that implement two-way dual language immersion programs, integrating rigorous academic instruction in both English and Spanish with explicit Catholic identity and character formation. The network is supported by the Roche Center for Catholic Education at Boston College Lynch School of Education.
+
+## DUAL LANGUAGE IMMERSION MODEL
+Two-way immersion (TWI) means that both native English speakers and native Spanish speakers learn together in the same classroom, with instruction delivered in both languages. Typically, 50% of instruction is in English and 50% in Spanish (or a 90/10 model in early grades). Goals are trilingual proficiency, academic achievement, and cross-cultural competence.
+
+## CHARACTER FORMATION IN TWIN-CS
+Character formation in TWIN-CS schools is understood as the holistic development of students as persons — intellectually, morally, spiritually, and socially. It is not a separate program but woven into the fabric of school life through:
+- Daily routines, rituals, and relationships
+- The integration of Catholic faith and virtue formation
+- The dual language mission itself — which embodies respect for both languages and cultures as an act of dignity
+- Teacher formation and mentorship
+- Community partnerships with families
+
+## VIRTUES AND DUAL LANGUAGE GOALS
+TWIN-CS schools see a deep connection between dual language learning and character formation:
+- **Humility** — learning in a second language requires vulnerability; students learn from each other across difference
+- **Solidarity** — the TWI model places English- and Spanish-dominant students in genuine interdependence
+- **Dignity** — honoring both languages communicates that all students' home cultures are valued
+- **Perseverance** — academic rigor in two languages requires sustained effort and resilience
+- **Empathy** — cross-cultural friendships formed in TWI classrooms develop the moral imagination
+
+## IGNATIAN PEDAGOGY
+Many TWIN-CS schools draw on the Ignatian pedagogical tradition: experience → reflection → action. This framework guides teachers to:
+1. Create rich learning experiences that engage the whole person
+2. Foster deep reflection on meaning, values, and social responsibility
+3. Call students to act justly in the world
+
+## CATHOLIC SOCIAL TEACHING (CST) IN TWIN-CS
+TWIN-CS schools understand their dual language mission as an act of Catholic social justice. Key CST principles expressed through the TWI model:
+- **Human Dignity** — every child's language and culture is an expression of God's image
+- **Solidarity** — students of different backgrounds learning together as equals
+- **Option for the Poor** — the network specifically serves communities where Spanish-speaking families have historically been marginalized in schools
+- **Community and Participation** — families are essential partners in the school community
+
+## RESEARCH CONTEXT
+The TWIN-CS Character Formation research project, funded by the John Templeton Foundation and based at the Roche Center for Catholic Education at Boston College Lynch School of Education (PI: Dr. Martin Scanlan; co-PI: Dr. Andrew Miller), examines how TWIN-CS schools intentionally develop character through their dual language programs. The project includes digital case studies of individual schools, including this StoryMap case.
+
+## THE PEDAGOGIES OF CHARACTER FORMATION HANDBOOK
+The Handbook synthesizes research on character formation in Catholic schools. Key frameworks include:
+- **Jubilee Centre framework** (University of Birmingham): virtues as the goal of education — intellectual virtues (curiosity, critical thinking), moral virtues (honesty, compassion, justice), civic virtues (participation, solidarity), and performance virtues (resilience, teamwork)
+- **Ignatian character formation**: the whole person (cura personalis), discernment, and service to the greater good
+- **Community of practice**: character is formed through participation in communities with shared values and practices
+`;
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE DEFINITIONS
+═══════════════════════════════════════════════════════════ */
+const PHASES = [
+  {
+    name: "Encounter",
+    desc: "<strong>Encounter</strong> — Enter the world of TWIN-CS. What surprises you? What resonates? What questions arise?",
+    prompts: [
+      "What is character formation?",
+      "How do virtues connect to dual language goals?",
+      "What does this look like in a real school?",
+      "¿Cómo puedo aplicar esto?"
+    ]
+  },
+  {
+    name: "Examine",
+    desc: "<strong>Examine</strong> — Look closely at the practices. How do TWIN-CS schools form character? What does the research say?",
+    prompts: [
+      "How does dual language immersion build solidarity?",
+      "What role does Ignatian pedagogy play?",
+      "How do TWIN-CS schools engage families in character formation?",
+      "What virtues are most central in this model?"
+    ]
+  },
+  {
+    name: "Envision",
+    desc: "<strong>Envision</strong> — Imagine applying these ideas in your own context. What is possible? What would need to change?",
+    prompts: [
+      "How might I integrate character formation into my curriculum?",
+      "What tensions arise between academic rigor and virtue formation?",
+      "How could I strengthen the dual language–character connection in my school?",
+      "What would culturally responsive character formation look like here?"
+    ]
+  },
+  {
+    name: "Commit",
+    desc: "<strong>Commit</strong> — Identify a concrete next step. What will you carry from this case into your practice or leadership?",
+    prompts: [
+      "What's one practice I could start this week?",
+      "How might I bring this framework to my colleagues?",
+      "Help me draft a reflection on what I've learned.",
+      "What would a character formation goal look like for my classroom?"
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+let messages = [];
+let currentPhase = 0;
+let currentRole = 'Teacher';
+let isLoading = false;
+
+/* ═══════════════════════════════════════════════════════════
+   DOM REFS
+═══════════════════════════════════════════════════════════ */
+const splash    = document.getElementById('splash');
+const btnBegin  = document.getElementById('btn-begin');
+const chatEl    = document.getElementById('chat-container');
+const userInput = document.getElementById('user-input');
+const sendBtn   = document.getElementById('send-btn');
+const phaseCard = document.getElementById('phase-card');
+const saveToast = document.getElementById('save-toast');
+
+/* ═══════════════════════════════════════════════════════════
+   SPLASH
+═══════════════════════════════════════════════════════════ */
+btnBegin.addEventListener('click', () => {
+  splash.classList.add('hidden');
+  initChat();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE & ROLE CONTROLS
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.phase-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPhase = +btn.dataset.phase;
+    updatePhaseCard();
+  });
+});
+
+document.querySelectorAll('.role-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentRole = chip.dataset.role;
+  });
+});
+
+function updatePhaseCard() {
+  phaseCard.innerHTML = PHASES[currentPhase].desc;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT CHAT
+═══════════════════════════════════════════════════════════ */
+function initChat() {
+  updatePhaseCard();
+  messages = [];
+  chatEl.innerHTML = '';
+  const p = PHASES[currentPhase];
+  const card = document.createElement('div');
+  card.className = 'welcome-card';
+  card.innerHTML = `
+    <h2>Bienvenida a Compañera</h2>
+    <p>Your bilingual thought partner for exploring formative education in TWIN-CS dual language Catholic schools — grounded in the <em>Pedagogies of Character Formation Handbook</em>.</p>
+    <div class="prompt-chips">
+      ${p.prompts.map(q => `<button class="prompt-chip">${q}</button>`).join('')}
+    </div>
+  `;
+  chatEl.appendChild(card);
+  card.querySelectorAll('.prompt-chip').forEach(chip => {
+    chip.addEventListener('click', () => sendMessage(chip.textContent));
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDERING
+═══════════════════════════════════════════════════════════ */
+function renderMessage(role, content) {
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  msg.innerHTML = `
+    <div class="msg-avatar">${role === 'assistant' ? 'C' : 'You'}</div>
+    <div class="msg-bubble">${formatMarkdown(content)}</div>
+  `;
+  chatEl.appendChild(msg);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function formatMarkdown(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/^#{1,3} (.+)$/gm,'<strong>$1</strong>')
+    .replace(/^[-•] (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs,'<ul>$1</ul>')
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/^(?!<[uol]|<p)(.+)$/gm,'<p>$1</p>')
+    .replace(/<p><\/p>/g,'');
+}
+
+function showTyping() {
+  const t = document.createElement('div');
+  t.className = 'msg assistant'; t.id = 'typing';
+  t.innerHTML = `<div class="msg-avatar">C</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(t);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+/* ═══════════════════════════════════════════════════════════
+   SYSTEM PROMPT
+═══════════════════════════════════════════════════════════ */
+function buildSystemPrompt() {
+  return `You are Compañera, a warm and intellectually engaged bilingual AI thought partner embedded in a digital case study about TWIN-CS (Two-Way Immersion Network for Catholic Schools). This case study is part of the Templeton Foundation research project on pedagogies of character formation, conducted by the Roche Center for Catholic Education at Boston College Lynch School of Education.
+
+The user is a ${currentRole} currently in the "${PHASES[currentPhase].name}" phase of the case study.
+
+Your role:
+1. Help the user deeply understand how character formation works in TWIN-CS dual language Catholic schools
+2. Connect concrete school practices to broader frameworks (Ignatian pedagogy, Catholic Social Teaching, virtue ethics, Jubilee Centre framework)
+3. Invite reflection on how these ideas connect to the user's own context
+4. Ask thoughtful follow-up questions
+5. Be a genuine thought partner — not a lecture bot
+
+Draw on this knowledge base:
+${TWINCS_KNOWLEDGE}
+
+Tone: Warm, intellectually engaged, grounded in Catholic educational research. Bilingual — respond in whatever language the user writes in. Typically 2–4 paragraphs unless a structured list is clearly better. Avoid being preachy.`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEND MESSAGE — calls the Vercel proxy
+═══════════════════════════════════════════════════════════ */
+async function sendMessage(text) {
+  if (!text.trim() || isLoading) return;
+  isLoading = true;
+  sendBtn.disabled = true;
+
+  renderMessage('user', text);
+  messages.push({ role: 'user', content: text });
+  userInput.value = '';
+  userInput.style.height = 'auto';
+  showTyping();
+
+  try {
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: buildSystemPrompt(),
+        messages: messages
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const assistantText = data.content?.[0]?.text || '(No response)';
+    messages.push({ role: 'assistant', content: assistantText });
+    removeTyping();
+    renderMessage('assistant', assistantText);
+
+  } catch (err) {
+    removeTyping();
+    renderMessage('assistant', `⚠️ Something went wrong: ${err.message}. Please try again in a moment.`);
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    userInput.focus();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INPUT CONTROLS
+═══════════════════════════════════════════════════════════ */
+sendBtn.addEventListener('click', () => sendMessage(userInput.value));
+userInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(userInput.value); }
+});
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 140) + 'px';
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SAVE & RESET
+═══════════════════════════════════════════════════════════ */
+document.getElementById('btn-save').addEventListener('click', () => {
+  if (!messages.length) return;
+  const txt = messages.map(m => `[${m.role.toUpperCase()}]\n${m.content}`).join('\n\n---\n\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain' }));
+  a.download = `companera-conversation-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  saveToast.classList.add('show');
+  setTimeout(() => saveToast.classList.remove('show'), 2500);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (!messages.length || confirm('Start a new conversation?')) initChat();
+});
+</script>
+</body>
+</html>

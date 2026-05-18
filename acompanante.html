@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acompañante — Nativity Prep Thought Partner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ───────────────────────────────────────────────
+       CSS VARIABLES & RESET
+    ─────────────────────────────────────────────── */
+    :root {
+      --navy:    #1a2744;
+      --gold:    #c9902c;
+      --gold-lt: #e8b84b;
+      --cream:   #f8f4ed;
+      --warm:    #f0e8d5;
+      --rust:    #8b3a2a;
+      --text:    #1e1e1e;
+      --muted:   #6b6157;
+      --white:   #ffffff;
+      --radius:  12px;
+      --shadow:  0 4px 24px rgba(26,39,68,.14);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    /* ───────────────────────────────────────────────
+       SPLASH SCREEN
+    ─────────────────────────────────────────────── */
+    #splash {
+      position: fixed; inset: 0;
+      background: var(--navy);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1.5rem;
+      z-index: 100;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    #splash.hidden { opacity: 0; visibility: hidden; }
+    .splash-logo {
+      width: 72px; height: 72px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; color: var(--white);
+      box-shadow: 0 0 0 8px rgba(201,144,44,.25);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 8px rgba(201,144,44,.25); }
+      50%      { box-shadow: 0 0 0 16px rgba(201,144,44,.08); }
+    }
+    .splash-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--white);
+      letter-spacing: .02em;
+    }
+    .splash-subtitle {
+      font-size: .95rem;
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      max-width: 440px;
+      line-height: 1.6;
+      padding: 0 1.5rem;
+    }
+
+    /* API key form */
+    .key-form {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      width: min(420px, 90vw);
+      display: flex; flex-direction: column; gap: .9rem;
+    }
+    .key-form label {
+      font-size: .85rem; color: rgba(255,255,255,.7);
+      font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .key-form input {
+      padding: .7rem 1rem;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.06);
+      color: var(--white);
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .key-form input:focus { border-color: var(--gold); }
+    .key-form input::placeholder { color: rgba(255,255,255,.35); }
+    .key-hint {
+      font-size: .78rem; color: rgba(255,255,255,.45);
+    }
+    .key-hint a { color: var(--gold-lt); text-decoration: none; }
+    .key-hint a:hover { text-decoration: underline; }
+    .btn-start {
+      padding: .75rem 2rem;
+      background: var(--gold);
+      color: var(--white);
+      border: none; cursor: pointer;
+      border-radius: 8px;
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: .04em;
+      transition: background .2s, transform .1s;
+    }
+    .btn-start:hover { background: var(--gold-lt); transform: translateY(-1px); }
+    .btn-start:active { transform: translateY(0); }
+    #key-error {
+      font-size: .82rem; color: #ff8b7a;
+      display: none;
+    }
+
+    /* ───────────────────────────────────────────────
+       MAIN APP LAYOUT
+    ─────────────────────────────────────────────── */
+    #app {
+      height: 100vh;
+      display: flex; flex-direction: column;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 1rem 1.5rem .9rem;
+      display: flex; align-items: center; gap: 1rem;
+      flex-shrink: 0;
+      box-shadow: 0 2px 12px rgba(26,39,68,.3);
+    }
+    .header-icon {
+      width: 42px; height: 42px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; color: var(--white);
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 600;
+      line-height: 1.2;
+    }
+    .header-text p {
+      font-size: .75rem;
+      color: rgba(255,255,255,.6);
+      margin-top: .15rem;
+    }
+    .header-actions { margin-left: auto; display: flex; gap: .5rem; }
+    .btn-icon {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: var(--white);
+      border-radius: 6px;
+      padding: .4rem .75rem;
+      font-size: .78rem; cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-icon:hover { background: rgba(255,255,255,.2); }
+
+    /* PHASE RIBBON */
+    #phase-bar {
+      background: var(--warm);
+      border-bottom: 1px solid rgba(201,144,44,.25);
+      display: flex;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .phase-btn {
+      flex: 1;
+      padding: .65rem .5rem;
+      border: none; background: transparent;
+      font-size: .8rem; font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      border-bottom: 3px solid transparent;
+      transition: color .2s, border-color .2s, background .2s;
+      position: relative;
+    }
+    .phase-btn.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+      background: rgba(201,144,44,.08);
+    }
+    .phase-btn:hover:not(.active) {
+      color: var(--navy);
+      background: rgba(201,144,44,.05);
+    }
+
+    /* PHASE CARD */
+    #phase-card {
+      padding: .9rem 1.5rem;
+      background: var(--white);
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.55;
+      flex-shrink: 0;
+      transition: all .3s ease;
+    }
+    #phase-card strong { color: var(--navy); }
+
+    /* ROLE SELECTOR */
+    #role-bar {
+      background: var(--white);
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      padding: .55rem 1.5rem;
+      display: flex; align-items: center; gap: .6rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .role-label {
+      font-size: .75rem; font-weight: 600;
+      color: var(--muted); letter-spacing: .05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .role-chip {
+      padding: .3rem .8rem;
+      border-radius: 20px;
+      border: 1.5px solid rgba(26,39,68,.2);
+      background: transparent;
+      font-size: .78rem; font-weight: 600;
+      color: var(--muted); cursor: pointer;
+      transition: all .2s;
+    }
+    .role-chip.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+    }
+    .role-chip:hover:not(.active) {
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+
+    /* CHAT AREA */
+    #chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.25rem 1.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      scroll-behavior: smooth;
+    }
+    #chat-container::-webkit-scrollbar { width: 6px; }
+    #chat-container::-webkit-scrollbar-track { background: transparent; }
+    #chat-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+    /* WELCOME MESSAGE */
+    .welcome-card {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      line-height: 1.65;
+    }
+    .welcome-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; margin-bottom: .5rem;
+    }
+    .welcome-card p { font-size: .9rem; color: rgba(255,255,255,.8); }
+
+    /* PROMPT CHIPS */
+    .prompt-chips {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      margin-top: .9rem;
+    }
+    .prompt-chip {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.25);
+      color: rgba(255,255,255,.9);
+      padding: .45rem .9rem;
+      border-radius: 20px;
+      font-size: .8rem; cursor: pointer;
+      transition: background .2s;
+    }
+    .prompt-chip:hover { background: rgba(255,255,255,.2); }
+
+    /* CHAT BUBBLES */
+    .msg {
+      display: flex; gap: .7rem;
+      animation: fadeUp .25s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700; flex-shrink: 0;
+    }
+    .msg.assistant .msg-avatar { background: var(--gold); color: var(--white); }
+    .msg.user .msg-avatar { background: var(--navy); color: var(--white); }
+    .msg-bubble {
+      max-width: 78%;
+      padding: .75rem 1rem;
+      border-radius: var(--radius);
+      font-size: .9rem; line-height: 1.6;
+    }
+    .msg.assistant .msg-bubble {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      border-bottom-left-radius: 3px;
+    }
+    .msg.user .msg-bubble {
+      background: var(--navy);
+      color: var(--white);
+      border-bottom-right-radius: 3px;
+    }
+    .msg-bubble p + p { margin-top: .5rem; }
+    .msg-bubble ul, .msg-bubble ol {
+      padding-left: 1.2rem; margin-top: .4rem;
+    }
+    .msg-bubble li { margin-bottom: .25rem; }
+    .msg-bubble strong { font-weight: 600; }
+    .msg-bubble em { font-style: italic; }
+
+    /* TYPING INDICATOR */
+    .typing-dots {
+      display: flex; gap: 4px; align-items: center;
+      padding: .5rem 0;
+    }
+    .typing-dots span {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes blink {
+      0%,80%,100% { opacity: .25; transform: scale(.8); }
+      40%          { opacity: 1;   transform: scale(1); }
+    }
+
+    /* INPUT BAR */
+    #input-area {
+      flex-shrink: 0;
+      padding: .9rem 1.5rem 1rem;
+      background: var(--white);
+      border-top: 1px solid rgba(0,0,0,.08);
+      display: flex; gap: .7rem; align-items: flex-end;
+    }
+    #user-input {
+      flex: 1;
+      padding: .65rem .95rem;
+      border: 1.5px solid rgba(26,39,68,.2);
+      border-radius: 10px;
+      font-family: inherit; font-size: .9rem;
+      resize: none; min-height: 44px; max-height: 140px;
+      outline: none;
+      background: var(--cream);
+      color: var(--text);
+      transition: border-color .2s;
+    }
+    #user-input:focus { border-color: var(--gold); }
+    #send-btn {
+      width: 44px; height: 44px;
+      background: var(--navy);
+      border: none; border-radius: 10px;
+      color: var(--white); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .1s;
+      flex-shrink: 0;
+    }
+    #send-btn:hover { background: var(--gold); transform: scale(1.05); }
+    #send-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    #send-btn svg { width: 18px; height: 18px; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: .72rem;
+      color: var(--muted);
+      padding: .4rem 1rem .6rem;
+      background: var(--warm);
+      border-top: 1px solid rgba(0,0,0,.06);
+      flex-shrink: 0;
+    }
+
+    /* SAVE CONVERSATION */
+    #save-toast {
+      position: fixed;
+      bottom: 5rem; left: 50%; transform: translateX(-50%);
+      background: var(--navy);
+      color: var(--white);
+      padding: .6rem 1.5rem;
+      border-radius: 20px;
+      font-size: .85rem;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+      z-index: 50;
+    }
+    #save-toast.show { opacity: 1; }
+
+    /* RESPONSIVE */
+    @media (max-width: 500px) {
+      header { padding: .8rem 1rem; }
+      #chat-container { padding: 1rem; }
+      #input-area { padding: .75rem 1rem; }
+      #role-bar { padding: .5rem 1rem; }
+      #phase-card { padding: .75rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ SPLASH ═══════════════ -->
+<div id="splash">
+  <div class="splash-logo">A</div>
+  <h1 class="splash-title">Acompañante</h1>
+  <p class="splash-subtitle">
+    Your thought partner for exploring character formation and the Graduate Support Program at Nativity Prep Academy — a digital case study in the Templeton Foundation TWIN-CS Project.
+  </p>
+  <button class="btn-start" id="btn-begin">Begin · Comenzar</button>
+</div>
+
+<!-- ═══════════════ MAIN APP ═══════════════ -->
+<div id="app">
+  <!-- HEADER -->
+  <header>
+    <div class="header-icon">A</div>
+    <div class="header-text">
+      <h1>Acompañante</h1>
+      <p>Nativity Prep Academy · Graduate Support Program Case Study</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-save">Save Conversation</button>
+      <button class="btn-icon" id="btn-reset">New Chat</button>
+    </div>
+  </header>
+
+  <!-- PHASE RIBBON -->
+  <div id="phase-bar">
+    <button class="phase-btn active" data-phase="0">Encounter</button>
+    <button class="phase-btn" data-phase="1">Examine</button>
+    <button class="phase-btn" data-phase="2">Envision</button>
+    <button class="phase-btn" data-phase="3">Commit</button>
+  </div>
+
+  <!-- PHASE DESCRIPTION CARD -->
+  <div id="phase-card"></div>
+
+  <!-- ROLE SELECTOR -->
+  <div id="role-bar">
+    <span class="role-label">I am a:</span>
+    <button class="role-chip active" data-role="Teacher">Teacher</button>
+    <button class="role-chip" data-role="Coach / Mentor">Coach / Mentor</button>
+    <button class="role-chip" data-role="Administrator">Administrator</button>
+    <button class="role-chip" data-role="Graduate Student">Graduate Student</button>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-container"></div>
+
+  <!-- INPUT BAR -->
+  <div id="input-area">
+    <textarea id="user-input" rows="1" placeholder="Ask about the Graduate Support Program, character formation, faith…"></textarea>
+    <button id="send-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Roche Center for Catholic Education · Boston College Lynch School of Education &nbsp;|&nbsp;
+    Templeton Foundation TWIN-CS Research Project
+  </footer>
+</div>
+
+<div id="save-toast">Conversation saved!</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   SOURCE KNOWLEDGE — Nativity Prep Academy (NPA)
+   Drawn from: nativityprep.org, GSP Multimedia Case Overview (interview transcripts),
+   Strategic Plan 2022-2025, Character Formation Survey (2022),
+   NativityMiguel Coalition, Universal Best Practices, and ArcGIS StoryMap.
+═══════════════════════════════════════════════════════════ */
+const NPA_KNOWLEDGE = `
+# Nativity Prep Academy (NPA) — Digital Case Study: Graduate Support Program
+# Sources: NPA website, GSP Case Overview, Strategic Plan 2022–2025, Character Formation Survey, NativityMiguel Coalition
+
+## SCHOOL OVERVIEW
+Nativity Prep Academy (NPA) is a private-independent, all-scholarship Catholic middle school and college access program located in San Diego, California (4463 College Avenue, San Diego, CA 92115). It serves young men and women from historically under-resourced, first-generation-college families in Southeast San Diego. The school currently serves 296 students: 71 in middle school, 90 in high school, 130 in college, and 5 in graduate programs. The student-to-teacher ratio is 8:1.
+
+## MISSION, PURPOSE & VALUES
+**Purpose:** To break the cycle of generational poverty by developing students' and families' ability to live a life of opportunity, choice, and service. Students will be productive, faith-filled, and fulfilled members of society who understand the importance of giving back.
+
+**Mission:** To provide a uniquely effective, integrated program of academic preparation, graduate support, and mutual long-term commitment that achieves nationally-recognized excellence in college graduation rates.
+
+**Community Values (adopted Spring 2018, developed collaboratively with students, graduates, parents, board, faculty, and staff):**
+1. Faithful
+2. Inquisitive
+3. Loving
+4. Perseverant
+5. Responsible
+
+The values are lived out daily: they appear posted in classrooms and throughout the school, they are embedded in assignments and classwork, they are emphasized in all school gatherings, they form the basis of restorative discipline practices, and they are recognized formally through **Value Honors** awards at the end of each trimester at an Awards Assembly.
+
+**The School MAGI (student pledge):** "I promise to be a person for others, to speak truthfully, and to take responsibility for my actions. I promise to respect myself, others, and the environment at all times. I promise to represent Nativity Prep with pride."
+
+## HISTORY & NETWORK CONTEXT
+NPA was incorporated in December 1999 in California as a 501(c)(3) nonprofit and opened in 2001 in Southeast San Diego. It began at a storefront location (3275 Market Street), moved next door in 2003, relocated to 2755 55th Street in 2010 (under a 50-year lease with Holy Spirit Church), and in 2020 purchased and moved to its current campus at 4463 College Avenue — which includes a chapel, large dining room, and multiple buildings for classrooms, offices, and community spaces.
+
+It is a member of the **NativityMiguel Coalition**, which currently comprises 49 member schools in 16 U.S. states, the District of Columbia, and two Canadian provinces. The Coalition traces its roots to 1971 and the Jesuit Nativity Mission Center in New York City (Lower East Side), which first opened a "Nativity-model" middle school. NMC's 2024 high school graduation rate is 6 percentage points higher than the national public school average; NMC's post-secondary enrollment rate is 22 percentage points higher than the national average.
+
+## CATHOLIC IDENTITY & SPIRITUALITY
+NPA's Catholic identity is independent (no sponsoring religious order) and draws from three interwoven sources:
+1. **Jesuit/Ignatian spirituality** — the founding charism since 2001; deeply rooted in being "a person for others"
+2. **Sisters of St. Joseph of Orange (CSJ) Educational Network** — joined 2019; faculty engage in Ministerial Formation through cluster partnerships with other CSJ schools
+3. **Catholic Social Teaching (CST)** — NPA explicitly frames its work with low-income, first-generation students as an act of social justice, treating everyone with dignity and walking in solidarity. The seven CST themes inform the school: life and dignity of the human person; call to family, community, and participation; option for the poor and vulnerable; solidarity; rights and responsibilities; dignity of work; care for God's creation.
+
+## THE GRADUATE SUPPORT PROGRAM (GSP) — THE CORNERSTONE
+The GSP is described as "perhaps the most critical component of our college-focused mission" and as "one of the key differentiators of NativityMiguel Schools." It establishes and sustains a **college culture beginning in 6th grade** and continuing through college graduation and beyond, providing academic support, college counseling, and deep personal care at every stage.
+
+**Key innovations in the GSP's development (per Xochitl Alvarez, Director of GSP):**
+1. Starting the program with middle school students
+2. Developing the program with high school students: bringing graduates back to campus, hiring additional personnel, weekly grade-level workshops, visiting first-year students at their high schools
+3. Developing supports for college students: seminars, college campus visits by GSP staff
+4. Community Success Day: held annually (2026 date: February 28); brings together students, alumni, and families
+
+**GSP History:** Started in 2009 as once-a-month classes for 8th graders plus weekly workshops for 12th graders. By 2013, evolved into weekly classes for every grade level. By 2015, all high school students were invited to weekly workshops.
+
+### THE 11-YEAR COMMITMENT
+The GSP guides students through a formally contracted 11-year arc: 3 years in middle school + 4 years in high school + 4+ years in college. Each year, students and families review and sign a commitment contract. This is understood by the community as a "college-bound contract" — it signals mutual accountability between the school and the family. Alumni describe this as a "genuine relationship," not just a program. One alumna described it: "Not with you just for those 11 years, but the rest of your life."
+
+All students and families are expected to attend the annual **Graduate Support Community Success Day**.
+
+### MIDDLE SCHOOL PHASE (3 Years, Grades 6–8)
+The GSP begins in 6th grade. Each grade level has distinct focuses:
+- **6th grade:** Explore and present a professional career; begin building resumes
+- **7th grade:** Research and present a 4-year university
+- **8th grade:** Prepare for high school placement tests, research high school options with family, present a culminating portfolio to the Nativity Prep community
+
+Students create and update resumes throughout middle school. The extended school day (6am–6pm study hall in middle school) provides structured homework time and teacher support. ~80% attend private/Catholic high schools; ~15% charter schools; ~5% public schools. NPA graduates may apply for high school scholarships to attend local Catholic high schools.
+
+### HIGH SCHOOL PHASE (4 Years, Grades 9–12)
+High school students attend GSP summer workshops and weekly workshops during the school year (typically Thursdays). They also have opportunities for college campus tours, 2-day college visits, and social activities. All students and families meet one-on-one with GSP staff to review academic and personal goals.
+
+- **9th grade:** High school transition, study skills, social-emotional learning
+- **10th–11th grade:** Colleges, careers, community service, internship opportunities
+- **12th grade:** College applications, scholarships, financial aid (Adelante Scholarship: $5,000/year × 4 years; Keith Foundation: $10,000)
+
+High school scholarship retention requirements increase each year (GPA from 3.1 to 3.4; community service at NPA from 10 to 25 hours per year).
+
+GSP provides transportation (buses) to help students get to and from high schools. Students are enrolled at schools including Academy of Our Lady of Peace, Bishop's School, Cathedral Catholic, Cristo Rey San Diego, Saint Augustine, Steele Canyon, and others.
+
+### COLLEGE PHASE (4+ Years)
+- College Success Workshop in summer before college begins
+- GSP staff visit first-year students on their college campuses
+- Monthly communication via emails, phone calls, and texts
+- Support for financial aid, scholarships, resume writing, internships, and employment
+- Book scholarships available each semester (with GPS baseline)
+- 14 students enrolled at University of San Diego through the Torero Promise
+- Students attend universities including Notre Dame, USC, UC San Diego, SDSU, and many CSU and community college campuses
+- Middle school students send care packages to college students
+- "With what we've learned we can succeed on our own" (GSP college alumni)
+
+### BEYOND COLLEGE: ALUMNI ADVISORY COUNCIL
+The Alumni Advisory Council was created alongside and is run by alumni. It targets young professional alumni, preventing them from "falling out." Council roles include President, Vice-President, and Chair of Social Community. One alumna described it: "It doesn't matter how long it's been... we are here." The council supports the Alumni's ongoing connection to Nativity's culture of service.
+
+## VOICES FROM THE COMMUNITY — INTERVIEW EXCERPTS
+These are actual voices from NPA's GSP community, collected as part of the multimedia case study:
+
+**Michael de la Riva, USC student, NPA Class of 2018 (alumni in college):**
+- Describes GSP as offering "holistic support" — including driving him home when his mom was busy. "More personal."
+- GSP gives financial aid guidance, care packages from middle schoolers, book scholarships.
+- In middle school: "positive reinforcement that he can go to college."
+- GSP would advocate for students, set up buses to get to school.
+- Key lesson: "GPA doesn't define you." Attitude of keep trying, overcome any issue.
+- "Courage to see where I've come from and what I can do."
+
+**Rafiq Randall, Steele Canyon High School (senior, NPA Class of 2022):**
+- GSP offers: weekly Thursday workshops, guest speakers (real estate, financial advisors), 1:1 meetings with every member, college portal check-ins.
+- Describes Ms. Alvarez as "more than a teacher, a mentor" — under her wing.
+- GSP as "another home to all of us." "Seeing friends since like 6th grade."
+- Unexpected gifts from GSP: time management ("they value time management of their students") and communication skills ("formal handshake, talk, building a bond instantly").
+- NPA encouraged him to take Honors and AP classes, helped him find his interest (Poli Sci); became class council treasurer and homecoming king.
+- "Genuine relationship." Family lineage at Nativity — his uncle also attended.
+
+**Natali Rendon, parent of three alumni (prefers Spanish):**
+- Three daughters went to NPA over 10 years. "Amazing opportunity / Grandiosa Oportunidad."
+- "Nos van encaminando" (they guide us through it). Helped her navigate the college process for 5 children.
+- Oldest daughter graduated from USD as an architect — first in family to graduate from college.
+- "No solo apoyo academico sino también financiero." (Not only academic but also financial support.)
+- "Se sienten preparados y sabiendo que cuentan con apoyo." (They feel prepared AND know they have support.)
+- Community among parents: "Al igual que los estudiantes, vamos a las mismas actividades." (Like the students, we go to the same activities.) "No solo dependemos de los profesores, nos informamos y ayudamos." (We don't only rely on teachers, we inform and help each other.)
+- The graduation ceremony before college: a formal promise in front of teachers and parents — "un compromiso muy grande para ellos, muy formal." Parents also make a promise of ongoing attentiveness.
+- "(Mis hijos) empiezan a valorar el apoyo. Y quieren regresar y ayudar." (My children start to value the support, and want to give back.)
+- "Van creando jóvenes líderes." (They are creating young leaders.)
+- Builds confidence: "Ellos pueden soñar y que no se limiten." (They can dream without limits.)
+
+**Estrella Garcia-Mondragon, Cathedral Catholic High School (junior, NPA Class of 2023):**
+- GSP "is more of a preparation for college — things and tools for college, but also for career. Really helps us in the future."
+- "Look forward to Thursdays" — every class begins with check-in: "How the week has been or how you are feeling." "Makes me know the teacher does care and wants to know how you are doing."
+- Sees NPA friends "as siblings" — "a bond that is really family-oriented. We will never really leave each other."
+- Introverted student: GSP helped her "be outside my bubble, do things I wouldn't do on my own" (e.g., presenting in front of class, class participation).
+- Summer: still returns for 2 weeks and 2-day college visit.
+- 11-year promise: "Not with you just for those 11 years, but the rest of your life."
+
+**Helsy Juarez, USD student, NPA Class of 2018 (alumni in college, architecture major):**
+- "Wouldn't be in this spot if it weren't for Nativity Prep."
+- First time she felt excited about education in general: when she first learned about the college process in middle school GSP.
+- "No question is ever wrong." "I felt understood and supported."
+- "Forcing to get educated and educate each other." "Uplift each other." "As if you've never left — they know you well."
+- Now part of the Alumni Advisory Council. Scholarships for books. "The strongest friendships are from Nativity."
+- Became ASB President — "a completely different person." A "good foundation to fall on."
+- "Nativity as a feeling rather than a place."
+- Life skills: "commitment to schools in front of people" — alumni put it on you. "Never-ending cycle — we grew up saying we will graduate."
+- GSP provided "FEELING SEEN (because of that small student body)."
+- "Help me embrace myself, and appreciate myself as a whole."
+
+**Valerye Avalos, alumni turned full-time NPA staff (Advancement Department):**
+- 1 of 7 children who attended NPA; now part of the fundraising team — donor relations, newsletter, social media.
+- "VOICE OF NATIVITY" — gives people the inside look at Nativity.
+- GSP in her era (Class of 2012): "An extended family. It was changing lives before and changing lives now ×10."
+- Now serves on Alumni Advisory Council. "Getting alumni back into campus. Live a life of service."
+- "When I see Nativity, I see myself as a 10-year-old — an adult on campus but also a role model. They know I was once one of them."
+- "Me giving back to GSP is me giving my testimony."
+- "It doesn't matter how long it's been... we are here."
+
+## CHARACTER FORMATION AT NPA — SURVEY FINDINGS (2022 Research)
+A survey of 20 respondents (parents/caregivers/volunteers, teachers, administrators, faculty consultants) found:
+- 18 of 20 said character formation is a "major focus" of the school
+- 16 of 20 said schools serve a "major role" in influencing character formation
+
+How character is emphasized (from survey responses):
+- "We recite and reflect the school's values."
+- "Encourage positivism with confidence and strong faith in God (Faithfulness)"
+- "We foster community and the rights and obligations of each individual within the community (Responsible)"
+- "We use restorative ways of discipline that is not punitive but connects to Jesus (Loving)"
+- "Advisory class, where two teachers grow with each child for the 3 years"
+
+Rituals and practices described by the community:
+- Weekly Masses; appreciation days; mentorship by outside adults
+- Core values emphasized in all school gatherings and posted in classes
+- Student-led conferences; restorative circles; conflict resolution exercises
+- Team building activities; public practice of recognition and apologies
+- "Exemplary life by the teachers"
+- Lessons built on instilling character in and out of school
+
+**Survey conclusion:** "There is 100% evidence of character formation in the survey answers, even more than it reflects in the school's official mission statement, purpose, and core values."
+
+## STRATEGIC PLAN 2022–2025 — KEY PRIORITIES
+The strategic plan reveals NPA's institutional commitments and growth areas:
+
+**Middle School Program goals:**
+- Grow to 96 students by 2026; 100% family engagement in governance committees and programming
+- 100% weekly classroom observations reflecting proficiency in Universal Best Practices
+- 100% students at/above grade level in Reading and Math by graduation
+- 3.75 average on School Climate Survey for "learning to be Christ-like" and Relationship sections
+- Implement complementary SEL assessment
+
+**GSP goals:**
+- 50% of 8th graders eligible for high school scholarship; 100% attendance at 1:1 meetings
+- 100% of HS students maintain 3.0+ GPA; 100% eligible for college financial aid; 100% matriculation
+- 100 people attend Community Success Day; 75% participation in HS workshops
+- 100% college freshman visits; 100% college graduation rate in 10 years
+
+**Culture goals:**
+- Co-create culture, rituals, traditions, and artifacts; formalize historical narrative; update culture books
+- Continue to support faith and spiritual development of faculty and staff
+- Formalize welcome and onboarding process for all new constituents
+
+**Funding/sustainability:**
+- Recruit 3 new alumni volunteers per year
+- 2 media features per year; 2 social posts per week; 15% follower growth
+- Prioritize student voice in all publication materials
+- Implement sustainable systems to assure delivery of the 11-year commitment
+- Create endowment for high school scholarships; planned giving plan
+
+## UNIVERSAL BEST PRACTICES FOR INSTRUCTION (NPA)
+NPA has developed a school-wide framework of Universal Best Practices for Instruction built around five domains:
+1. **Active Learning** — Students should be the most active members of the classroom. Balance between direct instruction and student-led learning. Use of graphic organizers, station rotation, choice boards. Students are "creating something to show their thinking," not passively receiving.
+2. **English Language Acquisition** — Structured before/during/after reading frameworks; vocabulary step-asides; comprehension monitoring; Active Language Practice; Structured Language Practices (SLP).
+3. **Social Emotional Learning (SEL)** — School-wide practices: mindfulness (every class), restorative practices in discipline, intentional grouping, homeroom community building, intentional greeting (handshakes), student choice. CASEL's five domains: self-awareness, self-management, social awareness, relationship skills, responsible decision-making.
+4. **Rigor (Depth of Knowledge)** — Uses Webb's Depth of Knowledge (DOK) framework: Recall → Skill/Concept → Strategic Thinking → Extended Thinking. All four levels are necessary; higher levels are deliberately cultivated each lesson.
+5. **Teacher Clarity** — Uses "The Teacher Clarity Playbook" framework: learning intentions and success criteria guide instruction.
+
+## NativityMiguel COALITION — GSP NETWORK DATA
+- NMC's 2024 high school graduation rate is 6 percentage points higher than the national public school average (87%)
+- NMC's 2024 post-secondary enrollment rate is 22 percentage points higher than the national average (62%)
+- 49 member schools in 16 states, DC, and two Canadian provinces
+- GSP is one of the key differentiators of NativityMiguel Schools — "our partnership with our students and families extends beyond graduation"
+`;
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE DEFINITIONS
+═══════════════════════════════════════════════════════════ */
+const PHASES = [
+  {
+    name: "Encounter",
+    desc: "<strong>Encounter</strong> — Enter the story of Nativity Prep and meet the community. What draws you in? What surprises you?",
+    prompts: [
+      "What is the NativityMiguel model and how does NPA embody it?",
+      "Tell me about NPA's community values and how they come alive",
+      "What do students and families say about what makes NPA different?",
+      "How does NPA's Ignatian and CSJ spirituality shape its work?"
+    ]
+  },
+  {
+    name: "Examine",
+    desc: "<strong>Examine</strong> — Look closely at how the GSP works. What practices shape character? What do students, parents, and alumni say?",
+    prompts: [
+      "What does the 11-year commitment actually look like in practice?",
+      "How does the GSP build character — not just college readiness?",
+      "What do alumni say about how the program changed them?",
+      "How does NPA engage families as partners in formation?"
+    ]
+  },
+  {
+    name: "Envision",
+    desc: "<strong>Envision</strong> — Imagine applying NPA's approach in your own context. What could be adapted? What tensions or possibilities arise?",
+    prompts: [
+      "How might a long-term commitment model translate to my school?",
+      "What tensions might arise in sustaining 11 years of graduate support?",
+      "How could we build a stronger college culture starting in middle school?",
+      "What would the alumni-as-staff model look like in my context?"
+    ]
+  },
+  {
+    name: "Commit",
+    desc: "<strong>Commit</strong> — Identify a concrete next step. What will you carry from this case into your practice or leadership?",
+    prompts: [
+      "What's one practice from NPA I could begin this year?",
+      "How might I advocate for extended graduate support in my school?",
+      "What would it mean to treat character formation as a 'feeling, not just a place'?",
+      "Help me write a reflection on what I've learned from this case."
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   APP STATE
+═══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   PROXY ENDPOINT — set this to your Vercel deployment URL
+   e.g. https://your-project.vercel.app/api/chat
+═══════════════════════════════════════════════════════════ */
+const PROXY_URL = 'REPLACE_WITH_YOUR_VERCEL_URL/api/chat';
+
+let messages = [];
+let currentPhase = 0;
+let currentRole = 'Teacher';
+let isLoading = false;
+
+/* ═══════════════════════════════════════════════════════════
+   DOM REFS
+═══════════════════════════════════════════════════════════ */
+const splash      = document.getElementById('splash');
+const btnBegin    = document.getElementById('btn-begin');
+const chatEl      = document.getElementById('chat-container');
+const userInput   = document.getElementById('user-input');
+const sendBtn     = document.getElementById('send-btn');
+const phaseCard   = document.getElementById('phase-card');
+const saveToast   = document.getElementById('save-toast');
+
+/* ═══════════════════════════════════════════════════════════
+   SPLASH
+═══════════════════════════════════════════════════════════ */
+btnBegin.addEventListener('click', () => {
+  splash.classList.add('hidden');
+  initChat();
+});
+
+/* ═══════════════════════════════════════════════════════════
+   PHASE & ROLE CONTROLS
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.phase-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPhase = +btn.dataset.phase;
+    updatePhaseCard();
+  });
+});
+
+document.querySelectorAll('.role-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentRole = chip.dataset.role;
+  });
+});
+
+function updatePhaseCard() {
+  const p = PHASES[currentPhase];
+  phaseCard.innerHTML = `${p.desc}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT CHAT
+═══════════════════════════════════════════════════════════ */
+function initChat() {
+  updatePhaseCard();
+  messages = [];
+  chatEl.innerHTML = '';
+
+  const p = PHASES[currentPhase];
+  const welcomeCard = document.createElement('div');
+  welcomeCard.className = 'welcome-card';
+  welcomeCard.innerHTML = `
+    <h2>Welcome to Acompañante</h2>
+    <p>I'm your thought partner for exploring the Graduate Support Program at <strong>Nativity Prep Academy</strong> — San Diego's only all-scholarship Catholic school, and a powerful case of character formation through long-term commitment, faith, and community. Ask me anything about NPA's model, its practices, or how it might connect to your own work.</p>
+    <div class="prompt-chips">
+      ${p.prompts.map(q => `<button class="prompt-chip">${q}</button>`).join('')}
+    </div>
+  `;
+  chatEl.appendChild(welcomeCard);
+
+  welcomeCard.querySelectorAll('.prompt-chip').forEach(chip => {
+    chip.addEventListener('click', () => sendMessage(chip.textContent));
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDERING
+═══════════════════════════════════════════════════════════ */
+function renderMessage(role, content) {
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = role === 'assistant' ? 'A' : 'You';
+  const html = formatMarkdown(content);
+  msg.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-bubble">${html}</div>
+  `;
+  chatEl.appendChild(msg);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return msg;
+}
+
+function formatMarkdown(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^## (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^# (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[uol]|<p)(.+)$/gm, '<p>$1</p>')
+    .replace(/<p><\/p>/g, '');
+}
+
+function showTyping() {
+  const typing = document.createElement('div');
+  typing.className = 'msg assistant';
+  typing.id = 'typing';
+  typing.innerHTML = `
+    <div class="msg-avatar">A</div>
+    <div class="msg-bubble">
+      <div class="typing-dots"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  chatEl.appendChild(typing);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SYSTEM PROMPT
+═══════════════════════════════════════════════════════════ */
+function buildSystemPrompt() {
+  const phaseName = PHASES[currentPhase].name;
+  return `You are Acompañante, a thoughtful and warm AI thought partner embedded in a digital case study about Nativity Prep Academy (NPA) in San Diego — a private-independent, all-scholarship Catholic middle school and college access program. This case study is part of the Templeton Foundation TWIN-CS Research Project on pedagogies of character formation in Catholic school networks, conducted by the Roche Center for Catholic Education at Boston College Lynch School of Education.
+
+The user is a ${currentRole} currently in the "${phaseName}" phase of the case study.
+
+Your role is to:
+1. Help the user deeply understand NPA's Graduate Support Program (GSP) as a pedagogy of character formation — its structure, practices, commitments, and outcomes
+2. Connect the concrete practices of NPA to broader frameworks of character formation, Catholic identity, and educational excellence
+3. Invite reflection on how these practices might connect to the user's own context
+4. Ask thoughtful follow-up questions that deepen analysis
+5. Be a genuine thought partner — not a lecture bot
+
+Draw only on the following knowledge base. Do not fabricate data or programs not described here.
+
+${NPA_KNOWLEDGE}
+
+Tone: Warm, intellectually engaged, grounded in Catholic social teaching and educational research sensibilities. Avoid being preachy. Be concise but substantive — typically 2–4 paragraphs unless the question calls for a structured list. Use plain language. You may gently use phrases from the NPA community's own vocabulary (e.g., "long-term commitment," "community values," "college culture," "graduate support").
+
+Always respond in the same language the user writes in. If they write in Spanish, respond in Spanish. If in English, respond in English.`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEND MESSAGE
+═══════════════════════════════════════════════════════════ */
+async function sendMessage(text) {
+  if (!text.trim() || isLoading) return;
+  isLoading = true;
+  sendBtn.disabled = true;
+
+  renderMessage('user', text);
+  messages.push({ role: 'user', content: text });
+  userInput.value = '';
+  userInput.style.height = 'auto';
+
+  showTyping();
+
+  try {
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: buildSystemPrompt(),
+        messages: messages
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const assistantText = data.content?.[0]?.text || '(No response)';
+    messages.push({ role: 'assistant', content: assistantText });
+    removeTyping();
+    renderMessage('assistant', assistantText);
+
+  } catch (err) {
+    removeTyping();
+    renderMessage('assistant', `⚠️ Something went wrong: ${err.message}. Please try again in a moment.`);
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    userInput.focus();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INPUT CONTROLS
+═══════════════════════════════════════════════════════════ */
+sendBtn.addEventListener('click', () => sendMessage(userInput.value));
+
+userInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage(userInput.value);
+  }
+});
+
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 140) + 'px';
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SAVE & RESET
+═══════════════════════════════════════════════════════════ */
+document.getElementById('btn-save').addEventListener('click', () => {
+  if (!messages.length) return;
+  const txt = messages.map(m => `[${m.role.toUpperCase()}]\n${m.content}`).join('\n\n---\n\n');
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `acompanante-conversation-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  saveToast.classList.add('show');
+  setTimeout(() => saveToast.classList.remove('show'), 2500);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (!messages.length || confirm('Start a new conversation?')) {
+    initChat();
+  }
+});
+</script>
+</body>
+</html>

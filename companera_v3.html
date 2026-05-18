@@ -507,7 +507,7 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-    const response = await fetch(PROXY_URL, {
+const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -507,11 +507,11 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-const response = await fetch(PROXY_URL, {
-  method: 'POST',
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-      model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
         system: buildSystemPrompt(),
         messages: messages

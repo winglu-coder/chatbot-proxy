@@ -263,7 +263,7 @@
    e.g. https://your-project.vercel.app/api/chat
 ═══════════════════════════════════════════════════════════ */
 const PROXY_URL = '/api/chat';
-
+  
 /* ═══════════════════════════════════════════════════════════
    TWIN-CS KNOWLEDGE BASE
 ═══════════════════════════════════════════════════════════ */
@@ -507,8 +507,8 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
+const response = await fetch(PROXY_URL, {
+  method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
       model: 'claude-3-5-sonnet-20241022',

@@ -507,16 +507,16 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 1000,
-        system: buildSystemPrompt(),
-        messages: messages
-      })
-    });
+const response = await fetch(PROXY_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    model: 'claude-sonnet-4-20250514', // Must match backend proxy config exactly
+    max_tokens: 1000,
+    system: buildSystemPrompt(),
+    messages: messages
+  })
+});
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));

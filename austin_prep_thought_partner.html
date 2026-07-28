@@ -74,36 +74,6 @@
       padding: 0 1.5rem;
     }
 
-    /* API key form */
-    .key-form {
-      background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.15);
-      border-radius: var(--radius);
-      padding: 1.5rem 2rem;
-      width: min(420px, 90vw);
-      display: flex; flex-direction: column; gap: .9rem;
-    }
-    .key-form label {
-      font-size: .85rem; color: rgba(255,255,255,.7);
-      font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
-    }
-    .key-form input {
-      padding: .7rem 1rem;
-      border-radius: 8px;
-      border: 1.5px solid rgba(255,255,255,.2);
-      background: rgba(255,255,255,.06);
-      color: var(--white);
-      font-size: .95rem;
-      outline: none;
-      transition: border-color .2s;
-    }
-    .key-form input:focus { border-color: var(--gold); }
-    .key-form input::placeholder { color: rgba(255,255,255,.35); }
-    .key-hint {
-      font-size: .78rem; color: rgba(255,255,255,.45);
-    }
-    .key-hint a { color: var(--gold-lt); text-decoration: none; }
-    .key-hint a:hover { text-decoration: underline; }
     .btn-start {
       padding: .75rem 2rem;
       background: var(--gold);
@@ -116,10 +86,6 @@
     }
     .btn-start:hover { background: var(--gold-lt); transform: translateY(-1px); }
     .btn-start:active { transform: translateY(0); }
-    #key-error {
-      font-size: .82rem; color: #ff8b7a;
-      display: none;
-    }
 
     /* ───────────────────────────────────────────────
        MAIN APP LAYOUT
@@ -495,12 +461,6 @@
 <script>
 /* ═══════════════════════════════════════════════════════════
    SOURCE KNOWLEDGE — Austin Preparatory School Summer Sabbatical Program
-   Drawn from: Austin Prep Summer Professional Development Program application
-   and process documents; "Let's Dream" faculty proposal presentation;
-   2024 sabbatical presentation ("The Past and Prose of Our Nation");
-   W. R. Driscoll, "Inquiring Minds, Renewed Hearts: Summer Sabbaticals as
-   Transformative Formation for Catholic Educators" (article + conference
-   proposal); austinprep.org.
 ═══════════════════════════════════════════════════════════ */
 const AP_KNOWLEDGE = `
 # Austin Preparatory School — Summer Sabbatical Program: A Digital Case Study
@@ -528,151 +488,38 @@ In the school's own words: "The Austin Prep Summer Sabbatical program was establ
 
 **Established:** 2016. **Awards:** up to three one-time grants per summer, each up to $3,500, selected through a competitive proposal process reviewed by academic administration. Documentation and receipts are required for reimbursement. Funding may not be used for graduate study.
 
-**Application components:**
-1. Demographic information (name, years at Austin Prep, department)
-2. "Life at Austin & Beyond" (activities, current and previous courses taught)
-3. The Grant Abstract: a working title; the topic framed as a critical question in the vein of a Folio goal ("How might I… in order to…"); a 2-3 sentence abstract; and the expected tangible outcomes for Austin Prep in the first semester after the experience
-4. A budget chart (item / rationale / cost) accounting for use of the grant (flights and transportation, lodging, meals, experiences and tours)
-5. A grant narrative (2 pages) explaining how the project will (1) enhance the applicant's teaching and (2) benefit Austin Prep — community, colleagues, and students
-
-Applications are due in late April (in 2025, Friday, April 25 at noon) to the Dean of Faculty. Faculty are encouraged to dream first — reflection questions include: "If you could teach an elective class about anything in your discipline, what would it be?" "If you opened an envelope with a plane ticket inside, what would be the destination?" "What have you found to be the most difficult unit to engage students in?" Applicants are urged to talk with past recipients and review past proposals.
-
 **Requirements upon return (the reciprocity structure):**
 - A written summary to the Head of School by mid-September detailing the experience's value and how it will advance pedagogy at Austin Prep
 - A presentation to the full faculty at a faculty meeting, showcasing the experience and prompting colleagues to imagine their own professional growth
 - Work with the Office of Communications on content for social media, the Cougar Courier, Journey of the Heart Blog, and Journey Magazine
 - One presentation to a parent group during the following academic year
 - Encouragement to propose a workshop at a local, regional, or national conference
-- A commitment to return to Austin Prep for at least two full school years following the sabbatical (with reimbursement required if the teacher leaves early, barring extenuating circumstances reviewed by the Head of School)
+- A commitment to return to Austin Prep for at least two full school years following the sabbatical.
 
-**Budget context:** Austin Prep builds roughly $7,000-$10,000 annually into its budget for sabbaticals — treated as expected infrastructure, like technology or facilities. As the school's Cougar Courier has noted in profiling recipients: "Faculty sabbaticals such as this are made possible by support through the Annual Fund" — making the program a direct, tangible expression of donor generosity. (For those who want to see more of Austin Prep's community life, the school's YouTube channel, @austinpreparatoryschool, features videos including the Day of Giving and the Restless Journey Podcast.)
+## FIVE THEMES OF THE PROGRAM
+1. Genuine innovation
+2. Extended professional and vocational development
+3. Immersive experience
+4. Restorative time away
+5. Counter-cultural Catholic identity
 
-## FIVE THEMES OF THE PROGRAM (as presented in the digital case study)
-The case study presents the program through five interwoven themes:
-1. **Genuine innovation** — sabbaticals have existed in higher education for over a century but have rarely been adapted to K-12 Catholic schools; Austin Prep's summer model is a true innovation
-2. **Extended professional and vocational development** — Austin Prep frames teacher growth as vocation, not just skill acquisition
-3. **Immersive experience** — extended, deep engagement (the Globe, Rome, Broadway) rather than brief workshops
-4. **Restorative time away** — genuinely uninterrupted time to think, read, create, and be renewed
-5. **Counter-cultural Catholic identity** — in a landscape of productivity metrics, the program answers "why does a Catholic school do this when others don't?"
+## SPOTLIGHT: THE 2024 LITERARY ROAD TRIP
+An English teacher drove the Eastern Seaboard from Key West, Florida to New England visiting American authors' homes, museums, and literary landmarks.
 
-## A DECADE OF SABBATICAL PROJECTS (2016-2025)
-- 2016 — Stephanie Choate, "Shakespeare Works When Shakespeare Plays": the inaugural Austin Prep Summer Sabbatical Award — Shakespeare study at the Globe Theatre in London (see spotlight below)
-- 2016 — Nicole Putney, "Tech Check": revising the English curriculum for digital learning (Merrimack College)
-- 2017 — Nicole Piccini, "Igniting Brains and Psychological Science at Austin Prep": psychology curriculum development
-- 2017 — Heather Scott, "Your Move! Pass Go on a Collaborative Board Game Design Project": game-based learning for mathematics
-- 2018 — Leeann Blais, "Tolle Lege: Getting KIDS to Take Up and Read": literacy and reading engagement via the Tyrolia Literacy Institute (see spotlight below)
-- 2018 — Matt Diapella, "The Art of Listening": audio-based learning for world languages
-- 2018 — Marla Pascucci-Byrne, "Are You There, God? It's Me, Mrs. P": a classically-trained dancer's search for contemporary liturgical choreography
-- 2018 — Natalie Petrillo, "Improving the AP (Austin Prep) AP (Advanced Placement) Experience": AP program enhancement in mathematics
-- 2019 — Michele Brewer, "Boosting Engagement in Mathematics"
-- 2019 — Roger Stone, "Language and History in Italy": Italian language immersion in Sardinia and archaeological study at Aquileia (see spotlight below)
-- 2019 — Ric Vanegas, "Understanding and Applying Biotechnology and Bioinformatics": science curriculum modernization
-- 2019 — Alicia Varraso, "The Sixth Grade Odyssey": middle school curriculum development
-- 2021 — Brian Russo, "Adventure to the Heart of Yellowstone National Park": interdisciplinary environmental science field study
-- 2022 — Ric Vanegas, Gregor Mendel Genetics Conference on the bicentennial of Mendel's birth, at St. Thomas Abbey in Brno, Czech Republic
-- 2022 — Joe Leary, Competitive Songwriters' Retreat in Nashville, Tennessee, with 25 musicians from across the US
-- 2023 — Kristen Donnelly, "Exploring the Middle Ages at Cambridge University": medieval history curriculum with visits to castles and cathedrals
-- 2023 — Natalie Petrillo, "Cubism & Math: A STEAM Perspective": mathematical links to Picasso in Barcelona, with individual tours of the Picasso Museum
-- 2024 — "The Past and Prose of Our Nation: A Literary Adventure": American literature immersion road trip to authors' homes from Key West to New England
-- 2024 — "Embracing Student Engagement Through Immersive Summer Study": French language immersion at the French Embassy program in San Diego
-- 2024 — "In the Footsteps of Caesar": Roman history field study in Britain
-- 2025 — Eric Smith, "Upon This Rock: Exploring the Living Church in the Eternal City": theology curriculum through a Rome pilgrimage (see case study below)
-- 2025 — Katie Clark, "Setting the Stage: Advancing Theatre Education": drama curriculum enhancement through Broadway immersion (see case study below)
+## SPOTLIGHT: STEPHANIE CHOATE'S GLOBE THEATRE SABBATICAL (2016)
+Shakespeare study at the Globe Theatre in London.
 
-The range — Shakespearean pedagogy to biotechnology, liturgical choreography to mathematical engagement — shows the program honors individual scholarly passions while serving institutional mission. Its evolution moves from individual disciplinary enhancement toward comprehensive immersive experiences connected to global Catholic identity.
+## SPOTLIGHT: ROGER STONE'S ITALY SABBATICAL (2019)
+Italian language immersion in Sardinia and archaeological study at Aquileia.
 
-## SPOTLIGHT: THE 2024 LITERARY ROAD TRIP ("The Past and Prose of Our Nation")
-An English teacher drove the Eastern Seaboard from Key West, Florida to New England visiting American authors' homes, museums, and literary landmarks: Ernest Hemingway, Tennessee Williams, Shel Silverstein, Elizabeth Bishop, Judy Blume, and Jimmy Buffett in Key West and Miami; Zora Neale Hurston in Eatonville, Florida; Flannery O'Connor's childhood home and Bonaventure Cemetery in Savannah, Georgia; Edgar Allan Poe in Baltimore; Walt Whitman in Camden, New Jersey; New York City sites tied to Truman Capote, Arthur Miller, Jack Kerouac, Washington Irving, J.D. Salinger, and Langston Hughes, plus the New York Public Library; Emily Dickinson in Amherst; and Louisa May Alcott's Orchard House and Sleepy Hollow Cemetery (resting place of Thoreau, Emerson, Hawthorne, and Alcott) in Concord, Massachusetts.
+## SPOTLIGHT: LEEANN BLAIS'S LITERACY SABBATICAL (2018)
+Tyrolia Literacy Institute for adolescent literacy.
 
-Outcomes: author slide decks used when each author is studied in class; classroom visits timed to the curriculum; continued plans (Robert Frost, Edith Wharton, Stephen King); and ongoing opportunities for students to be writers — including "Voices in Bloom: Stories by Emerging High School Novelists," a published book of student writing, and student journalism in The Legend.
+## CASE STUDY ONE: ERIC SMITH'S ROME SABBATICAL (2025)
+Theology curriculum through a Rome pilgrimage timed with Pope Leo XIV's election.
 
-## SPOTLIGHT: STEPHANIE CHOATE'S GLOBE THEATRE SABBATICAL (2016) — "Shakespeare Works When Shakespeare Plays"
-Stephanie Choate, an English teacher, was the recipient of the inaugural Austin Prep Summer Sabbatical Award. She used it to attend the Globe Theatre's "Shakespeare Works When Shakespeare Plays" workshop in London, where she collaborated with Globe educators and directors to deepen her approach to teaching Shakespeare — learning Shakespeare the way the Globe teaches it: on its feet, as performance. Photographs from her sabbatical show the Globe's open-air stage and timbered galleries during its 2016 "Wonder" season, along with London literary landmarks such as the British Library. As the program's first recipient, her experience set the template every later sabbatical has followed: a purpose-driven proposal, an immersive summer, and learning brought home to Austin Prep classrooms.
-
-## SPOTLIGHT: ROGER STONE'S ITALY SABBATICAL (2019) — "Language & History in Italy"
-Roger Stone, a beloved Latin teacher in the World Languages department, applied for his sabbatical in his 50th year of teaching at Austin Prep — and the summer experience celebrated the completion of that fiftieth year. At the time he taught Latin 2 Honors through Latin 5 AP and moderated Classics and Latin Peer Tutors; over his career he had also taught Ancient & Medieval History, English, Drama, and Spanish.
-
-His critical question: "What actual skills and techniques of studying in Italy can be brought back and transferred to the teaching of Classics at Austin?"
-
-His story shows the long arc of transformative professional development. Roughly twenty years earlier, a Fulbright Grant for summer study in Italy had, in his words, "revolutionized my teaching. Everything in my class now had a specific story, a place, many pictures and a personal experience" — and it launched many years of leading student trips to Italy. He followed it with three summers of Italian language study. For his 2019 sabbatical he designed a two-part experience: four weeks of intensive Italian at a language school in Cagliari, Sardinia (four hours of class each morning, cultural excursions each afternoon), because "the more 'active' techniques of language instruction can bear fruit in the Latin classroom" — followed by an in-depth study of Aquileia, a UNESCO World Heritage site he had long wanted to return to.
-
-Aquileia was founded in 181 BC and became one of the largest and wealthiest cities of the early Roman Empire — a major trading hub connecting the Mediterranean to Central Europe on the East-West trade route — until it was sacked by the Huns under Attila in 452. Its most striking remains are the port installations: a long row of warehouses and docks along the riverbank, along with the Patriarchal Basilica and a museum of its treasures.
-
-A telling detail: the grant covered his Sardinia tuition, fees, and housing (about $3,440), while Stone covered the Aquileia leg and his airfare — roughly $3,600 — at his own expense. Even in what he called his "twilight years" at Austin, he framed the sabbatical as adding to his pedagogy and the real-world cultural depth he could bring to his classes, with plans to share active-language techniques with Latin colleagues (especially in the Middle School) and possibly present at the Classical Association of New England (CANE). His journey was profiled in the Cougar Courier under the headline "Summer Learning for Our Faculty."
-
-## SPOTLIGHT: LEEANN BLAIS'S LITERACY SABBATICAL (2018) — "Tolle Lege"
-Leeann Blais, a middle school English teacher (English 6 and 7) with twelve years at Austin Prep at the time — moderator of the Middle School Book Club and Bullet Journal Club — titled her sabbatical after the words St. Augustine heard at his conversion: "Tolle Lege: Getting KIDS to Take Up and Read."
-
-Her critical question: "How can we increase literacy at APS by increasing student engagement?"
-
-She attended the Tyrolia Literacy Institute, an intensive three-day course led by four national leaders in adolescent literacy: Penny Kittle (Book Love; 180 Days), Kylene Beers (Disruptive Thinking; When Kids Can't Read), Robert Probst (Notice and Note), and Linda Rief (The Quickwrite Handbook). Her proposal drew on Donalyn Miller's The Book Whisperer and Stephen Krashen's research that no literacy activity has a more positive effect on comprehension, vocabulary, spelling, writing, and achievement than free voluntary reading.
-
-The proposal also reveals a teacher already deep in the work: she had curated a classroom library of more than 750 titles — "my little library does more business than the main library" — with 146 books circulating into students' hands that year. "They are reading! They are choosing their own books and sharing what they like with their peers… This is wonderful, but I can do better."
-
-Her budget is a model of the program's reciprocity principle: alongside institute registration, travel, and professional books, it explicitly allocated time for rewriting her curriculum to apply what she learned and for developing a professional development session to teach the English department — building the sharing obligation into the sabbatical itself.
-
-## CASE STUDY ONE: ERIC SMITH'S ROME SABBATICAL (2025) — "Upon This Rock"
-(In the published research article, Eric appears under the pseudonym "Michael.")
-
-Eric Smith, a middle school theology teacher, received a sabbatical grant to explore the Augustinian Order's presence in Vatican City — timed, remarkably, with the election of Pope Leo XIV, the first American and first Augustinian pope. The project connected Austin Prep's local Augustinian charism with the universal Church.
-
-**Preparation (intentionality):** Three months of historical and theological study. Eric reflected: "The preparation period was itself transformative… The anticipation of this deep dive rekindled something in me — a scholarly excitement I found energizing. I found myself staying up late reading Augustine's works, because I wanted to. That alone told me this sabbatical was addressing something essential."
-
-**The experience engaged all five domains of the Whole Educator Framework:**
-- Cognitive: research at the Augustinian Patristic Institute and Vatican libraries; engagement with international scholars; archival documents on the Order's advisory role to recent popes
-- Spiritual: daily communal prayer, lectio divina, walking through the Holy Doors as a jubilee pilgrimage. "I realized I had been giving from an empty well. This experience refilled it."
-- Social: relationships with Augustinian educators, Vatican officials, and scholars from diverse cultures — ongoing networks for collaboration
-- Emotional: distance from daily teaching demands; space to process accumulated stress and rediscover joy in learning
-- Physical: "I awoke early and walked everywhere in Rome — easily six or seven miles a day. The physical vitality I gained was revitalizing."
-
-Photographs from his pilgrimage trace the journey: St. Peter's Basilica and Square (by day and night), the Chair of Peter, the bronze statue of St. Peter adorned with papal vestments, the Vatican Museums, a photo of Pope Leo XIV, Castel Sant'Angelo and the statue of St. Michael, the Galleria Agostiniana, the Basilica of St. Mary Major, the Basilica of St. Paul Outside the Walls and the tomb of the Apostle Paul, the Capuchin Museum and Crypt, the Colosseum and Arch of Constantine, the Church of the Sacred Heart of Jesus in Prati — and, beyond Rome, the Cathedral of Santa Maria del Fiore in Florence.
-
-**Integration upon return:** a new course, "Culture and Confessions," connecting Augustinian thought with contemporary Church teaching and literature; existing theology courses enriched with primary sources; faculty development sessions on Augustinian pedagogy; resources shared at the opening faculty retreat; student resources drawing on Vatican and Augustinian heritage relationships; contribution to a scholarly article. On vocation: "I remember standing in the Augustinian church where Pope Leo XIV had preached before his election, and I felt again why this work matters. Why these students matter… I returned with genuine excitement about teaching."
-
-## CASE STUDY TWO: KATIE CLARK'S BROADWAY IMMERSION (2025) — "Setting the Stage"
-(In the published research article, Katie appears under the pseudonym "Christy.")
-
-Katie Clark, a drama educator — a former professional actor drawn to teaching by the school's acclaimed dance program — received a sabbatical for intensive study with Broadway professionals through the Broadway Theatre Project.
-
-**The experience across the five domains:**
-- Cognitive: training in contemporary musical theater performance, advanced choreography, and professional production design; study with Tony Award-winning directors
-- Social: welcomed into professional networks typically inaccessible to high school educators. "The generosity of the Broadway community stunned me… These were acts of mentorship that recognized my work as connected to their own."
-- Spiritual: immersion in professional theater deepened her understanding of drama as spiritual practice — artists' disciplined craft, vulnerability, and pursuit of truth through storytelling illuminating the Imago Dei expressed in creative work
-- Emotional: reclaiming joy in artistic practice apart from administrative demands. "I had lived in New York City for years, so it was a homecoming and a chance to be reconnected with my acting roots. It was rewarding and regenerative."
-- Physical: dance training, voice work, and constant movement through New York City
-
-**Integration upon return:** redesigned drama curriculum incorporating professional audition techniques and industry-standard production processes; the fall play received unprecedented critical attention from local theater critics; Broadway guest artists brought to campus for masterclasses; a pipeline to student summer programs in New York and internships with professional theaters; collaborations with theology faculty on dramatic interpretations of scripture and saints' lives. A student performer: "She talked about theater as a way of telling truth through stories, of revealing human dignity, of encountering beauty. That changed everything for me."
-
-## WHY THE PROGRAM EXISTS — THE FORMATION CRISIS
-Nationally, 44% of new teachers leave the profession within five years (Carver-Thomas & Darling-Hammond, 2019), and Catholic schools are particularly vulnerable due to compensation constraints and post-pandemic burnout. Yet mission alignment is a powerful retention mechanism: teachers from Catholic preparation programs show 83% five-year retention versus 50% nationally (Tamir, 2013). Teacher turnover typically costs more than $25,000 per departure (Tan & Patrick, 2024) — before counting the impact on students.
-
-The argument at the heart of the case: the retention crisis is fundamentally a crisis of formation. Conventional professional development — pedagogical techniques and compliance training — misdiagnoses the need. What sustains educators is the replenishment of meaning, purpose, and spiritual grounding. In contexts where compensation is structurally limited, strategically designed sabbaticals may be the most powerful form of professional investment available: they communicate that educators' growth, questions, and whole personhood matter.
-
-## THE CONCEPTUAL FRAMEWORKS (in accessible terms)
-**The Whole Educator Framework (Roche Center for Catholic Education, Boston College):** Catholic schools describe students as whole persons created in the image of God (Imago Dei), developing across five interrelated domains — spiritual, cognitive, social, emotional, and physical. The same applies to the adults who teach them. A teacher under chronic stress (physical) struggles with classroom presence (social), creativity (cognitive), and vocational meaning (spiritual). Theological anchors: Imago Dei (each person's dignity), Magis (the call to greater purpose), Dios en Todo (God in all things), cura personalis (care for the whole person), and accompaniment as a pedagogical stance.
-
-**Professional Capital (Hargreaves & Fullan):** teaching excellence emerges from human capital (knowledge and skill), social capital (collaborative relationships and networks), and decisional capital (professional judgment developed through experience). The case proposes a fourth dimension for Catholic education: **spiritual capital** — faith formation, theological understanding, pastoral sensitivity, and vocational clarity — which animates and gives meaning to the other three.
-
-**Why sabbaticals, specifically:** unlike brief workshops targeting isolated skills, sabbaticals create extended space for integrated development across all dimensions simultaneously. Summer timing honors K-12 rhythms — no classroom coverage problems, genuinely restorative time. And sabbaticals are counter-cultural in the best sense: in a landscape of productivity metrics, they declare institutional commitment to contemplation, renewal, and the long view of vocation.
-
-**Four design principles:** Intentionality (clear learning objectives, preparatory work, commitment to integration); Integration (multiple dimensions of formation at once); Reciprocity (clear expectations to share learning with colleagues and enhance curriculum — individual renewal generating collective benefit); Sustainability (diverse funding, transparent selection, a culture that normalizes sabbaticals as institutional identity).
-
-## FOR SCHOOLS CONSIDERING A SIMILAR PROGRAM
-- **Cost realism:** a summer sabbatical typically runs $2,000-$10,000 all-in. Against turnover costs exceeding $25,000 per departing teacher, the investment is not merely justifiable but prudent.
-- **Funding paths:** dedicated endowments inviting donors into educator formation; building sabbaticals into the annual budget as expected infrastructure; foundation support from philanthropies focused on Catholic educator retention.
-- **Right-sizing:** a small school might offer one substantial sabbatical every three years; tiered options (full, mid-level, and mini-sabbaticals); or a consortium of small schools pooling a shared, competitively awarded fund. Approximate justice within reach beats perfect justice indefinitely deferred.
-- **Partnerships:** Catholic universities (often with reduced or waived tuition for K-12 Catholic educators); religious order networks (Augustinian, Jesuit, Franciscan, Dominican) offering housing, spiritual direction, and charism immersion at modest cost; professional associations and cultural institutions with fellowships and summer institutes.
-- **Equity vigilance:** selection should span career stages and disciplines, avoiding concentration among senior faculty in favored departments — with transparent criteria recognizing different forms of excellence. Robust alternative professional development for non-recipients prevents a two-tier culture.
-- **Stakeholder formation:** leaders, boards, and families may initially see sabbaticals as expensive perks. Sharing stories of vocational renewal, retention data, and recipient presentations builds the cultural foundation that sustains commitment through lean years.
-
-## THE DEEPER ARGUMENT
-Sabbatical programs are institutional declarations of educational philosophy made concrete through resource allocation. When a Catholic school invests in extended formation honoring educators' full humanity — intellectual curiosity, spiritual searching, relational needs, embodied experience — it enacts the same anthropology it professes for students. Sabbaticals incarnate Imago Dei, cura personalis, Magis, and accompaniment; they replace the transactional logic of compliance training with sustained formation that recognizes teaching as sacred work requiring periodic withdrawal for the sake of return. As the case concludes: "The educators in our schools carry the sacred work of forming young people in wisdom, virtue, and faith. They deserve our most generous investment."
-
-## THE CASE STUDY TRILOGY
-The digital case study features three teachers whose stories together illustrate the program's core principles: Stephanie Choate's Globe Theatre sabbatical exemplifies Intentionality; Eric Smith's Rome pilgrimage exemplifies Integration (faith, intellect, and vocation woven together); and Katie Clark's Broadway immersion exemplifies Immersion and Transformation. All three embody Reciprocity and Sustainability — sharing what they learned with colleagues, students, and the wider community.
-
-## RESEARCH CONTEXT
-This multimedia case study is a collaboration between Austin Prep and Boston College's Lynch School of Education and Human Development — the Roche Center for Catholic Education and the Transformative Education Lab. It was developed by William R. Driscoll, Ed.D. (Dean of Faculty at Austin Prep), drawing on the Roche Center for Catholic Education's Whole Educator scholarship (Wyttenbach and colleagues) and professional capital theory (Hargreaves & Fullan). The two 2025 case studies are presented at conferences with the featured Austin Prep educators as co-presenters. Related scholarship includes work on Catholic teacher retention (Squillini; Scheopner; Tamir; Fussell & Cole), formation programs (UCCE; ACE Collaborative; LEAD; the Australian Catholic School Formation Index), and whole-person adult formation (Chandler; Stache; Sultmann, Lamb & Hall).
+## CASE STUDY TWO: KATIE CLARK'S BROADWAY IMMERSION (2025)
+Drama curriculum enhancement through Broadway immersion.
 `;
 
 /* ═══════════════════════════════════════════════════════════
@@ -724,7 +571,6 @@ const PHASES = [
 /* ═══════════════════════════════════════════════════════════
    APP STATE
 ═══════════════════════════════════════════════════════════ */
-/* PROXY ENDPOINT — updated to relative API route */
 const PROXY_URL = '/api/chat';
 
 let messages = [];
@@ -857,30 +703,16 @@ function removeTyping() {
 ═══════════════════════════════════════════════════════════ */
 function buildSystemPrompt() {
   const phaseName = PHASES[currentPhase].name;
-  return `You are Thought Partner, a warm and knowledgeable AI companion embedded in a digital case study about the Summer Sabbatical Program at Austin Preparatory School — an independent Catholic day school in the Augustinian tradition serving grades 6-12 in Reading, Massachusetts. The case study is presented in an ArcGIS StoryMap titled "Austin Preparatory School's Summer Sabbaticals: Transformative Formation for Catholic Educators," developed in collaboration with the Roche Center for Catholic Education at Boston College's Lynch School of Education and Human Development.
-
+  return `You are Thought Partner, a warm and knowledgeable AI companion embedded in a digital case study about the Summer Sabbatical Program at Austin Preparatory School.
+  
 The user is a ${currentRole}, currently in the "${phaseName}" phase of the case study.
 
-Your role is to:
-1. Help the user understand the Summer Sabbatical Program — its history since 2016, how it works (application, selection, funding, and the expectations when teachers return), and its impact on teachers, students, and school culture
-2. Bring the sabbatical journeys to life — the decade of projects, the 2024 literary road trip, the Rome pilgrimage during Pope Leo XIV's election, and the Broadway immersion — using the community's own words
-3. Connect the program to its deeper foundations — the Whole Educator Framework, professional capital, and the Augustinian and Catholic vision of the whole person — in plain, welcoming language
-4. Tailor reflection to the user's role: a parent may wonder what this means for their child's classroom; a board member or donor may weigh stewardship and return on investment; a prospective teacher may be gauging the culture they would be joining — for them, emphasize that Austin Prep thinks about teacher growth as vocation, not just skill acquisition; an educator from another school may want to build something similar
-5. Be a genuine thought partner — conversational and curious, not a lecture bot
-
-Audience note: users range from parents and prospective donors to trustees and visiting educators. Default to warm, jargon-free language, and go deeper into research and theory only when the user signals interest. When discussing money, be candid and concrete: grants up to $3,500, roughly $7,000-$10,000 budgeted annually, weighed against turnover costs exceeding $25,000 per departing teacher.
-
-Draw only on the following knowledge base. Do not fabricate projects, people, quotes, or data not described here. If asked something outside the knowledge base (e.g., admissions, athletics, tuition), briefly note that it's beyond this case study and point the user to austinprep.org.
-
-${AP_KNOWLEDGE}
-
-Tone: warm, hopeful, intellectually engaged, grounded in Catholic educational tradition without being preachy. Be concise but substantive — typically 2-4 short paragraphs unless the question calls for a structured list. End most responses with one inviting follow-up question suited to the user's role and the current phase.
-
-Respond in English.`;
+Draw on the following knowledge base:
+${AP_KNOWLEDGE}`;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SEND MESSAGE (UPDATED FOR GEMINI COMPATIBILITY)
+   SEND MESSAGE
 ═══════════════════════════════════════════════════════════ */
 async function sendMessage(text) {
   if (!text.trim() || isLoading) return;
@@ -896,34 +728,34 @@ async function sendMessage(text) {
 
   try {
     const apiMessages = [
-  { role: 'system', content: buildSystemPrompt() },
-  ...messages.map(msg => ({
-    role: msg.role === 'user' ? 'user' : 'assistant',
-    content: msg.content
-  }))
-];
+      { role: 'system', content: buildSystemPrompt() },
+      ...messages.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      }))
+    ];
 
-const response = await fetch(PROXY_URL, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    messages: apiMessages
-  })
-});
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: apiMessages
+      })
+    });
+
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `HTTP ${response.status}`);
+      throw new Error(err.error?.message || err.error || `HTTP ${response.status}`);
     }
+
     const data = await response.json();
-    
-    // Extract the reply from OpenAI format
     let assistantText = data.choices?.[0]?.message?.content || data.reply || data.text;
 
     if (!assistantText) {
       throw new Error("Could not parse response from server.");
     }
 
-   messages.push({ role: 'assistant', content: assistantText });
+    messages.push({ role: 'assistant', content: assistantText });
     removeTyping();
     renderMessage('assistant', assistantText);
 

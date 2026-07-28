@@ -25,7 +25,6 @@ export default async function handler(req, res) {
 
     for (const msg of rawMessages) {
       if (msg.role === 'system') {
-        // If content is an object or array, extract text, otherwise use string
         if (typeof msg.content === 'string') {
           systemPrompt = msg.content;
         } else if (Array.isArray(msg.content)) {
@@ -38,7 +37,7 @@ export default async function handler(req, res) {
 
     // Prepare payload for Anthropic API
     const payload = {
-      model: 'claude-3-5-sonnet-20241022',
+      model: 'claude-3-5-sonnet-20240620',
       max_tokens: 1024,
       ...req.body,
       messages: cleanMessages

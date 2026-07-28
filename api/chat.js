@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Spread req.body FIRST, then override model and max_tokens so frontend defaults can't break it
+    // Build payload for Anthropic
     const payload = {
       ...req.body,
       model: 'claude-sonnet-5',
@@ -46,6 +46,11 @@ export default async function handler(req, res) {
     if (systemPrompt) {
       payload.system = systemPrompt;
     }
+
+    // Remove non-Anthropic fields if present
+    delete payload.temperature;
+    delete payload.top_p;
+    delete payload.top_k;
 
     // 3. Forward request to Anthropic API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -64,7 +69,24 @@ export default async function handler(req, res) {
       return res.status(response.status).json(data);
     }
 
-    return res.status(200).json(data);
+    // Extract text from Anthropic response
+    const replyText = data.content && data.content[0] ? data.content[0].text : '';
+
+    // 4. Return formatted response compatible with both OpenAI client formats and Anthropic formats
+    return res.status(200).json({
+      ...data,
+      text: replyText,
+      reply: replyText,
+      choices: [
+        {
+          message: {
+            role: 'assistant',
+            content: replyText
+          },
+          text: replyText
+        }
+      ]
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

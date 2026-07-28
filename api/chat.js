@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 3. Forward request to Anthropic API with model specified
+    // 3. Forward request to Anthropic API with model and max_tokens specified
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -27,6 +27,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 1024,
         ...req.body
       })
     });

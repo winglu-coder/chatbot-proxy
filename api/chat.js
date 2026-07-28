@@ -1,25 +1,23 @@
 export default async function handler(req, res) {
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // CORS headers — allow requests from GitHub Pages and ArcGIS StoryMaps
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // Handle CORS preflight
+  // 1. Handle CORS preflight request
   if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
 
+  // Set CORS header for standard POST responses
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // 2. Validate API key presence
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'API key not configured on server.' });
   }
 
   try {
+    // 3. Forward request to Anthropic API with model specified
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -27,7 +25,10 @@ export default async function handler(req, res) {
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01'
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify({
+        model: 'claude-3-5-sonnet-20241022',
+        ...req.body
+      })
     });
 
     const data = await response.json();
@@ -37,8 +38,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json(data);
-
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 }

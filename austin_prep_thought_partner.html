@@ -898,8 +898,8 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-    const response = await fetch(PROXY_URL, {
-      method: 'POST',
+const response = await fetch('https://chatbot-mmcs1.vercel.app/api/chat', {
+method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',

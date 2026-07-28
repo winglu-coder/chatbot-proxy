@@ -35,11 +35,11 @@ export default async function handler(req, res) {
       }
     }
 
-    // Prepare payload for Anthropic API
+    // Spread req.body FIRST, then override model and max_tokens so frontend defaults can't break it
     const payload = {
+      ...req.body,
       model: 'claude-sonnet-5',
       max_tokens: 1024,
-      ...req.body,
       messages: cleanMessages
     };
 

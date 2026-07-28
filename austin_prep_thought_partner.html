@@ -895,39 +895,35 @@ async function sendMessage(text) {
   showTyping();
 
   try {
-    // Format contents specifically for Gemini API (user / model)
-    const geminiContents = messages.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }]
-    }));
+    const apiMessages = [
+  { role: 'system', content: buildSystemPrompt() },
+  ...messages.map(msg => ({
+    role: msg.role === 'user' ? 'user' : 'assistant',
+    content: msg.content
+  }))
+];
 
-    const response = await fetch(PROXY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
-        contents: geminiContents
-      })
-    });
-
+const response = await fetch(PROXY_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    messages: apiMessages
+  })
+});
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
       throw new Error(err.error?.message || `HTTP ${response.status}`);
     }
-
     const data = await response.json();
     
-    // Flexible parsing to support both Gemini response formats and proxy standard responses
-    let assistantText = '';
-    if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
-      assistantText = data.candidates[0].content.parts[0].text;
-    } else if (data.content && data.content[0]?.text) {
-      assistantText = data.content[0].text;
-    } else {
-      assistantText = "I received a response, but could not parse the format properly.";
+    // Extract the reply from OpenAI format
+    let assistantText = data.choices?.[0]?.message?.content || data.reply || data.text;
+
+    if (!assistantText) {
+      throw new Error("Could not parse response from server.");
     }
 
-    messages.push({ role: 'assistant', content: assistantText });
+   messages.push({ role: 'assistant', content: assistantText });
     removeTyping();
     renderMessage('assistant', assistantText);
 

@@ -17,7 +17,38 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 3. Forward request to Anthropic API with model and max_tokens specified
+    const rawMessages = req.body.messages || [];
+
+    // Separate system messages from user/assistant messages
+    let systemPrompt = req.body.system || undefined;
+    const cleanMessages = [];
+
+    for (const msg of rawMessages) {
+      if (msg.role === 'system') {
+        // If content is an object or array, extract text, otherwise use string
+        if (typeof msg.content === 'string') {
+          systemPrompt = msg.content;
+        } else if (Array.isArray(msg.content)) {
+          systemPrompt = msg.content;
+        }
+      } else {
+        cleanMessages.push(msg);
+      }
+    }
+
+    // Prepare payload for Anthropic API
+    const payload = {
+      model: 'claude-3-5-sonnet-20241022',
+      max_tokens: 1024,
+      ...req.body,
+      messages: cleanMessages
+    };
+
+    if (systemPrompt) {
+      payload.system = systemPrompt;
+    }
+
+    // 3. Forward request to Anthropic API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -25,11 +56,7 @@ export default async function handler(req, res) {
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01'
       },
-      body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 1024,
-        ...req.body
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();

@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       }
     }
 
-    // Build payload for Anthropic
+    // Build payload for Anthropic API
     const payload = {
       ...req.body,
       model: 'claude-sonnet-5',
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
       payload.system = systemPrompt;
     }
 
-    // Remove non-Anthropic fields if present
+    // Clean up non-Anthropic request parameters if sent by frontend
     delete payload.temperature;
     delete payload.top_p;
     delete payload.top_k;
@@ -66,28 +66,40 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      return res.status(response.status).json(data);
+      // If Anthropic returns an error, return it as JSON with error message formatted
+      const errMsg = data.error?.message || data.error || JSON.stringify(data);
+      return res.status(response.status).json({ error: errMsg, message: errMsg });
     }
 
-    // Extract text from Anthropic response
-    const replyText = data.content && data.content[0] ? data.content[0].text : '';
+    // Safely extract output string
+    let replyText = '';
+    if (data.content && Array.isArray(data.content)) {
+      replyText = data.content
+        .filter(item => item.type === 'text')
+        .map(item => item.text)
+        .join('');
+    } else if (typeof data.content === 'string') {
+      replyText = data.content;
+    }
 
-    // 4. Return formatted response compatible with both OpenAI client formats and Anthropic formats
+    // 4. Return response supporting ALL common frontend message parsing patterns
     return res.status(200).json({
       ...data,
       text: replyText,
       reply: replyText,
+      message: replyText,
+      content: replyText,
       choices: [
         {
+          text: replyText,
           message: {
             role: 'assistant',
             content: replyText
-          },
-          text: replyText
+          }
         }
       ]
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message, message: error.message });
   }
 }

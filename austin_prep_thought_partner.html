@@ -12,17 +12,17 @@
        CSS VARIABLES & RESET
     ─────────────────────────────────────────────── */
     :root {
-      --green:    #1b4d2e;
-      --gold:     #c9902c;
+      --green:   #1b4d2e;
+      --gold:    #c9902c;
       --gold-lt: #e8b84b;
-      --cream:    #f8f4ed;
-      --warm:     #f0e8d5;
-      --rust:     #8b3a2a;
-      --text:     #1e1e1e;
-      --muted:    #6b6157;
-      --white:    #ffffff;
-      --radius:   12px;
-      --shadow:   0 4px 24px rgba(27,77,46,.14);
+      --cream:   #f8f4ed;
+      --warm:    #f0e8d5;
+      --rust:    #8b3a2a;
+      --text:    #1e1e1e;
+      --muted:   #6b6157;
+      --white:   #ffffff;
+      --radius:  12px;
+      --shadow:  0 4px 24px rgba(27,77,46,.14);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -74,6 +74,36 @@
       padding: 0 1.5rem;
     }
 
+    /* API key form */
+    .key-form {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      width: min(420px, 90vw);
+      display: flex; flex-direction: column; gap: .9rem;
+    }
+    .key-form label {
+      font-size: .85rem; color: rgba(255,255,255,.7);
+      font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .key-form input {
+      padding: .7rem 1rem;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.06);
+      color: var(--white);
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .key-form input:focus { border-color: var(--gold); }
+    .key-form input::placeholder { color: rgba(255,255,255,.35); }
+    .key-hint {
+      font-size: .78rem; color: rgba(255,255,255,.45);
+    }
+    .key-hint a { color: var(--gold-lt); text-decoration: none; }
+    .key-hint a:hover { text-decoration: underline; }
     .btn-start {
       padding: .75rem 2rem;
       background: var(--gold);
@@ -86,6 +116,10 @@
     }
     .btn-start:hover { background: var(--gold-lt); transform: translateY(-1px); }
     .btn-start:active { transform: translateY(0); }
+    #key-error {
+      font-size: .82rem; color: #ff8b7a;
+      display: none;
+    }
 
     /* ───────────────────────────────────────────────
        MAIN APP LAYOUT
@@ -461,6 +495,12 @@
 <script>
 /* ═══════════════════════════════════════════════════════════
    SOURCE KNOWLEDGE — Austin Preparatory School Summer Sabbatical Program
+   Drawn from: Austin Prep Summer Professional Development Program application
+   and process documents; "Let's Dream" faculty proposal presentation;
+   2024 sabbatical presentation ("The Past and Prose of Our Nation");
+   W. R. Driscoll, "Inquiring Minds, Renewed Hearts: Summer Sabbaticals as
+   Transformative Formation for Catholic Educators" (article + conference
+   proposal); austinprep.org.
 ═══════════════════════════════════════════════════════════ */
 const AP_KNOWLEDGE = `
 # Austin Preparatory School — Summer Sabbatical Program: A Digital Case Study
@@ -495,7 +535,7 @@ In the school's own words: "The Austin Prep Summer Sabbatical program was establ
 4. A budget chart (item / rationale / cost) accounting for use of the grant (flights and transportation, lodging, meals, experiences and tours)
 5. A grant narrative (2 pages) explaining how the project will (1) enhance the applicant's teaching and (2) benefit Austin Prep — community, colleagues, and students
 
-Applications are due in late April to the Dean of Faculty. Faculty are encouraged to dream first — reflection questions include: "If you could teach an elective class about anything in your discipline, what would it be?" "If you opened an envelope with a plane ticket inside, what would be the destination?" "What have you found to be the most difficult unit to engage students in?" Applicants are urged to talk with past recipients and review past proposals.
+Applications are due in late April (in 2025, Friday, April 25 at noon) to the Dean of Faculty. Faculty are encouraged to dream first — reflection questions include: "If you could teach an elective class about anything in your discipline, what would it be?" "If you opened an envelope with a plane ticket inside, what would be the destination?" "What have you found to be the most difficult unit to engage students in?" Applicants are urged to talk with past recipients and review past proposals.
 
 **Requirements upon return (the reciprocity structure):**
 - A written summary to the Head of School by mid-September detailing the experience's value and how it will advance pedagogy at Austin Prep
@@ -505,48 +545,143 @@ Applications are due in late April to the Dean of Faculty. Faculty are encourage
 - Encouragement to propose a workshop at a local, regional, or national conference
 - A commitment to return to Austin Prep for at least two full school years following the sabbatical (with reimbursement required if the teacher leaves early, barring extenuating circumstances reviewed by the Head of School)
 
-**Budget context:** Austin Prep builds roughly $7,000-$10,000 annually into its budget for sabbaticals — treated as expected infrastructure, like technology or facilities. As the school's Cougar Courier has noted in profiling recipients: "Faculty sabbaticals such as this are made possible by support through the Annual Fund" — making the program a direct, tangible expression of donor generosity.
+**Budget context:** Austin Prep builds roughly $7,000-$10,000 annually into its budget for sabbaticals — treated as expected infrastructure, like technology or facilities. As the school's Cougar Courier has noted in profiling recipients: "Faculty sabbaticals such as this are made possible by support through the Annual Fund" — making the program a direct, tangible expression of donor generosity. (For those who want to see more of Austin Prep's community life, the school's YouTube channel, @austinpreparatoryschool, features videos including the Day of Giving and the Restless Journey Podcast.)
 
-## FIVE THEMES OF THE PROGRAM
-1. **Genuine innovation** — sabbaticals adapted to K-12 Catholic schools; Austin Prep's summer model is a true innovation
+## FIVE THEMES OF THE PROGRAM (as presented in the digital case study)
+The case study presents the program through five interwoven themes:
+1. **Genuine innovation** — sabbaticals have existed in higher education for over a century but have rarely been adapted to K-12 Catholic schools; Austin Prep's summer model is a true innovation
 2. **Extended professional and vocational development** — Austin Prep frames teacher growth as vocation, not just skill acquisition
 3. **Immersive experience** — extended, deep engagement (the Globe, Rome, Broadway) rather than brief workshops
 4. **Restorative time away** — genuinely uninterrupted time to think, read, create, and be renewed
 5. **Counter-cultural Catholic identity** — in a landscape of productivity metrics, the program answers "why does a Catholic school do this when others don't?"
 
 ## A DECADE OF SABBATICAL PROJECTS (2016-2025)
-- 2016 — Stephanie Choate, "Shakespeare Works When Shakespeare Plays": inaugural award — Shakespeare study at the Globe Theatre in London
-- 2016 — Nicole Putney, "Tech Check": revising English curriculum for digital learning
-- 2017 — Nicole Piccini, "Igniting Brains and Psychological Science at Austin Prep"
-- 2017 — Heather Scott, "Your Move! Pass Go on a Collaborative Board Game Design Project"
-- 2018 — Leeann Blais, "Tolle Lege: Getting KIDS to Take Up and Read": Tyrolia Literacy Institute
+- 2016 — Stephanie Choate, "Shakespeare Works When Shakespeare Plays": the inaugural Austin Prep Summer Sabbatical Award — Shakespeare study at the Globe Theatre in London (see spotlight below)
+- 2016 — Nicole Putney, "Tech Check": revising the English curriculum for digital learning (Merrimack College)
+- 2017 — Nicole Piccini, "Igniting Brains and Psychological Science at Austin Prep": psychology curriculum development
+- 2017 — Heather Scott, "Your Move! Pass Go on a Collaborative Board Game Design Project": game-based learning for mathematics
+- 2018 — Leeann Blais, "Tolle Lege: Getting KIDS to Take Up and Read": literacy and reading engagement via the Tyrolia Literacy Institute (see spotlight below)
 - 2018 — Matt Diapella, "The Art of Listening": audio-based learning for world languages
-- 2018 — Marla Pascucci-Byrne, "Are You There, God? It's Me, Mrs. P": liturgical choreography
-- 2018 — Natalie Petrillo, "Improving the AP Experience": AP mathematics
+- 2018 — Marla Pascucci-Byrne, "Are You There, God? It's Me, Mrs. P": a classically-trained dancer's search for contemporary liturgical choreography
+- 2018 — Natalie Petrillo, "Improving the AP (Austin Prep) AP (Advanced Placement) Experience": AP program enhancement in mathematics
 - 2019 — Michele Brewer, "Boosting Engagement in Mathematics"
-- 2019 — Roger Stone, "Language and History in Italy": Italian language in Sardinia & Aquileia
-- 2019 — Ric Vanegas, "Understanding and Applying Biotechnology and Bioinformatics"
-- 2019 — Alicia Varraso, "The Sixth Grade Odyssey"
-- 2021 — Brian Russo, "Adventure to the Heart of Yellowstone National Park"
-- 2022 — Ric Vanegas, Gregor Mendel Genetics Conference in Brno, Czech Republic
-- 2022 — Joe Leary, Competitive Songwriters' Retreat in Nashville, Tennessee
-- 2023 — Kristen Donnelly, "Exploring the Middle Ages at Cambridge University"
-- 2023 — Natalie Petrillo, "Cubism & Math: A STEAM Perspective" in Barcelona
-- 2024 — "The Past and Prose of Our Nation: A Literary Adventure": American literature road trip
-- 2024 — "Embracing Student Engagement Through Immersive Summer Study": San Diego French program
-- 2024 — "In the Footsteps of Caesar": Roman history in Britain
-- 2025 — Eric Smith, "Upon This Rock: Exploring the Living Church in the Eternal City" (Rome)
-- 2025 — Katie Clark, "Setting the Stage: Advancing Theatre Education" (Broadway)
+- 2019 — Roger Stone, "Language and History in Italy": Italian language immersion in Sardinia and archaeological study at Aquileia (see spotlight below)
+- 2019 — Ric Vanegas, "Understanding and Applying Biotechnology and Bioinformatics": science curriculum modernization
+- 2019 — Alicia Varraso, "The Sixth Grade Odyssey": middle school curriculum development
+- 2021 — Brian Russo, "Adventure to the Heart of Yellowstone National Park": interdisciplinary environmental science field study
+- 2022 — Ric Vanegas, Gregor Mendel Genetics Conference on the bicentennial of Mendel's birth, at St. Thomas Abbey in Brno, Czech Republic
+- 2022 — Joe Leary, Competitive Songwriters' Retreat in Nashville, Tennessee, with 25 musicians from across the US
+- 2023 — Kristen Donnelly, "Exploring the Middle Ages at Cambridge University": medieval history curriculum with visits to castles and cathedrals
+- 2023 — Natalie Petrillo, "Cubism & Math: A STEAM Perspective": mathematical links to Picasso in Barcelona, with individual tours of the Picasso Museum
+- 2024 — "The Past and Prose of Our Nation: A Literary Adventure": American literature immersion road trip to authors' homes from Key West to New England
+- 2024 — "Embracing Student Engagement Through Immersive Summer Study": French language immersion at the French Embassy program in San Diego
+- 2024 — "In the Footsteps of Caesar": Roman history field study in Britain
+- 2025 — Eric Smith, "Upon This Rock: Exploring the Living Church in the Eternal City": theology curriculum through a Rome pilgrimage (see case study below)
+- 2025 — Katie Clark, "Setting the Stage: Advancing Theatre Education": drama curriculum enhancement through Broadway immersion (see case study below)
+
+The range — Shakespearean pedagogy to biotechnology, liturgical choreography to mathematical engagement — shows the program honors individual scholarly passions while serving institutional mission. Its evolution moves from individual disciplinary enhancement toward comprehensive immersive experiences connected to global Catholic identity.
+
+## SPOTLIGHT: THE 2024 LITERARY ROAD TRIP ("The Past and Prose of Our Nation")
+An English teacher drove the Eastern Seaboard from Key West, Florida to New England visiting American authors' homes, museums, and literary landmarks: Ernest Hemingway, Tennessee Williams, Shel Silverstein, Elizabeth Bishop, Judy Blume, and Jimmy Buffett in Key West and Miami; Zora Neale Hurston in Eatonville, Florida; Flannery O'Connor's childhood home and Bonaventure Cemetery in Savannah, Georgia; Edgar Allan Poe in Baltimore; Walt Whitman in Camden, New Jersey; New York City sites tied to Truman Capote, Arthur Miller, Jack Kerouac, Washington Irving, J.D. Salinger, and Langston Hughes, plus the New York Public Library; Emily Dickinson in Amherst; and Louisa May Alcott's Orchard House and Sleepy Hollow Cemetery (resting place of Thoreau, Emerson, Hawthorne, and Alcott) in Concord, Massachusetts.
+
+Outcomes: author slide decks used when each author is studied in class; classroom visits timed to the curriculum; continued plans (Robert Frost, Edith Wharton, Stephen King); and ongoing opportunities for students to be writers — including "Voices in Bloom: Stories by Emerging High School Novelists," a published book of student writing, and student journalism in The Legend.
+
+## SPOTLIGHT: STEPHANIE CHOATE'S GLOBE THEATRE SABBATICAL (2016) — "Shakespeare Works When Shakespeare Plays"
+Stephanie Choate, an English teacher, was the recipient of the inaugural Austin Prep Summer Sabbatical Award. She used it to attend the Globe Theatre's "Shakespeare Works When Shakespeare Plays" workshop in London, where she collaborated with Globe educators and directors to deepen her approach to teaching Shakespeare — learning Shakespeare the way the Globe teaches it: on its feet, as performance. Photographs from her sabbatical show the Globe's open-air stage and timbered galleries during its 2016 "Wonder" season, along with London literary landmarks such as the British Library. As the program's first recipient, her experience set the template every later sabbatical has followed: a purpose-driven proposal, an immersive summer, and learning brought home to Austin Prep classrooms.
+
+## SPOTLIGHT: ROGER STONE'S ITALY SABBATICAL (2019) — "Language & History in Italy"
+Roger Stone, a beloved Latin teacher in the World Languages department, applied for his sabbatical in his 50th year of teaching at Austin Prep — and the summer experience celebrated the completion of that fiftieth year. At the time he taught Latin 2 Honors through Latin 5 AP and moderated Classics and Latin Peer Tutors; over his career he had also taught Ancient & Medieval History, English, Drama, and Spanish.
+
+His critical question: "What actual skills and techniques of studying in Italy can be brought back and transferred to the teaching of Classics at Austin?"
+
+His story shows the long arc of transformative professional development. Roughly twenty years earlier, a Fulbright Grant for summer study in Italy had, in his words, "revolutionized my teaching. Everything in my class now had a specific story, a place, many pictures and a personal experience" — and it launched many years of leading student trips to Italy. He followed it with three summers of Italian language study. For his 2019 sabbatical he designed a two-part experience: four weeks of intensive Italian at a language school in Cagliari, Sardinia (four hours of class each morning, cultural excursions each afternoon), because "the more 'active' techniques of language instruction can bear fruit in the Latin classroom" — followed by an in-depth study of Aquileia, a UNESCO World Heritage site he had long wanted to return to.
+
+Aquileia was founded in 181 BC and became one of the largest and wealthiest cities of the early Roman Empire — a major trading hub connecting the Mediterranean to Central Europe on the East-West trade route — until it was sacked by the Huns under Attila in 452. Its most striking remains are the port installations: a long row of warehouses and docks along the riverbank, along with the Patriarchal Basilica and a museum of its treasures.
+
+A telling detail: the grant covered his Sardinia tuition, fees, and housing (about $3,440), while Stone covered the Aquileia leg and his airfare — roughly $3,600 — at his own expense. Even in what he called his "twilight years" at Austin, he framed the sabbatical as adding to his pedagogy and the real-world cultural depth he could bring to his classes, with plans to share active-language techniques with Latin colleagues (especially in the Middle School) and possibly present at the Classical Association of New England (CANE). His journey was profiled in the Cougar Courier under the headline "Summer Learning for Our Faculty."
+
+## SPOTLIGHT: LEEANN BLAIS'S LITERACY SABBATICAL (2018) — "Tolle Lege"
+Leeann Blais, a middle school English teacher (English 6 and 7) with twelve years at Austin Prep at the time — moderator of the Middle School Book Club and Bullet Journal Club — titled her sabbatical after the words St. Augustine heard at his conversion: "Tolle Lege: Getting KIDS to Take Up and Read."
+
+Her critical question: "How can we increase literacy at APS by increasing student engagement?"
+
+She attended the Tyrolia Literacy Institute, an intensive three-day course led by four national leaders in adolescent literacy: Penny Kittle (Book Love; 180 Days), Kylene Beers (Disruptive Thinking; When Kids Can't Read), Robert Probst (Notice and Note), and Linda Rief (The Quickwrite Handbook). Her proposal drew on Donalyn Miller's The Book Whisperer and Stephen Krashen's research that no literacy activity has a more positive effect on comprehension, vocabulary, spelling, writing, and achievement than free voluntary reading.
+
+The proposal also reveals a teacher already deep in the work: she had curated a classroom library of more than 750 titles — "my little library does more business than the main library" — with 146 books circulating into students' hands that year. "They are reading! They are choosing their own books and sharing what they like with their peers… This is wonderful, but I can do better."
+
+Her budget is a model of the program's reciprocity principle: alongside institute registration, travel, and professional books, it explicitly allocated time for rewriting her curriculum to apply what she learned and for developing a professional development session to teach the English department — building the sharing obligation into the sabbatical itself.
+
+## CASE STUDY ONE: ERIC SMITH'S ROME SABBATICAL (2025) — "Upon This Rock"
+(In the published research article, Eric appears under the pseudonym "Michael.")
+
+Eric Smith, a middle school theology teacher, received a sabbatical grant to explore the Augustinian Order's presence in Vatican City — timed, remarkably, with the election of Pope Leo XIV, the first American and first Augustinian pope. The project connected Austin Prep's local Augustinian charism with the universal Church.
+
+**Preparation (intentionality):** Three months of historical and theological study. Eric reflected: "The preparation period was itself transformative… The anticipation of this deep dive rekindled something in me — a scholarly excitement I found energizing. I found myself staying up late reading Augustine's works, because I wanted to. That alone told me this sabbatical was addressing something essential."
+
+**The experience engaged all five domains of the Whole Educator Framework:**
+- Cognitive: research at the Augustinian Patristic Institute and Vatican libraries; engagement with international scholars; archival documents on the Order's advisory role to recent popes
+- Spiritual: daily communal prayer, lectio divina, walking through the Holy Doors as a jubilee pilgrimage. "I realized I had been giving from an empty well. This experience refilled it."
+- Social: relationships with Augustinian educators, Vatican officials, and scholars from diverse cultures — ongoing networks for collaboration
+- Emotional: distance from daily teaching demands; space to process accumulated stress and rediscover joy in learning
+- Physical: "I awoke early and walked everywhere in Rome — easily six or seven miles a day. The physical vitality I gained was revitalizing."
+
+Photographs from his pilgrimage trace the journey: St. Peter's Basilica and Square (by day and night), the Chair of Peter, the bronze statue of St. Peter adorned with papal vestments, the Vatican Museums, a photo of Pope Leo XIV, Castel Sant'Angelo and the statue of St. Michael, the Galleria Agostiniana, the Basilica of St. Mary Major, the Basilica of St. Paul Outside the Walls and the tomb of the Apostle Paul, the Capuchin Museum and Crypt, the Colosseum and Arch of Constantine, the Church of the Sacred Heart of Jesus in Prati — and, beyond Rome, the Cathedral of Santa Maria del Fiore in Florence.
+
+**Integration upon return:** a new course, "Culture and Confessions," connecting Augustinian thought with contemporary Church teaching and literature; existing theology courses enriched with primary sources; faculty development sessions on Augustinian pedagogy; resources shared at the opening faculty retreat; student resources drawing on Vatican and Augustinian heritage relationships; contribution to a scholarly article. On vocation: "I remember standing in the Augustinian church where Pope Leo XIV had preached before his election, and I felt again why this work matters. Why these students matter… I returned with genuine excitement about teaching."
+
+## CASE STUDY TWO: KATIE CLARK'S BROADWAY IMMERSION (2025) — "Setting the Stage"
+(In the published research article, Katie appears under the pseudonym "Christy.")
+
+Katie Clark, a drama educator — a former professional actor drawn to teaching by the school's acclaimed dance program — received a sabbatical for intensive study with Broadway professionals through the Broadway Theatre Project.
+
+**The experience across the five domains:**
+- Cognitive: training in contemporary musical theater performance, advanced choreography, and professional production design; study with Tony Award-winning directors
+- Social: welcomed into professional networks typically inaccessible to high school educators. "The generosity of the Broadway community stunned me… These were acts of mentorship that recognized my work as connected to their own."
+- Spiritual: immersion in professional theater deepened her understanding of drama as spiritual practice — artists' disciplined craft, vulnerability, and pursuit of truth through storytelling illuminating the Imago Dei expressed in creative work
+- Emotional: reclaiming joy in artistic practice apart from administrative demands. "I had lived in New York City for years, so it was a homecoming and a chance to be reconnected with my acting roots. It was rewarding and regenerative."
+- Physical: dance training, voice work, and constant movement through New York City
+
+**Integration upon return:** redesigned drama curriculum incorporating professional audition techniques and industry-standard production processes; the fall play received unprecedented critical attention from local theater critics; Broadway guest artists brought to campus for masterclasses; a pipeline to student summer programs in New York and internships with professional theaters; collaborations with theology faculty on dramatic interpretations of scripture and saints' lives. A student performer: "She talked about theater as a way of telling truth through stories, of revealing human dignity, of encountering beauty. That changed everything for me."
+
+## WHY THE PROGRAM EXISTS — THE FORMATION CRISIS
+Nationally, 44% of new teachers leave the profession within five years (Carver-Thomas & Darling-Hammond, 2019), and Catholic schools are particularly vulnerable due to compensation constraints and post-pandemic burnout. Yet mission alignment is a powerful retention mechanism: teachers from Catholic preparation programs show 83% five-year retention versus 50% nationally (Tamir, 2013). Teacher turnover typically costs more than $25,000 per departure (Tan & Patrick, 2024) — before counting the impact on students.
+
+The argument at the heart of the case: the retention crisis is fundamentally a crisis of formation. Conventional professional development — pedagogical techniques and compliance training — misdiagnoses the need. What sustains educators is the replenishment of meaning, purpose, and spiritual grounding. In contexts where compensation is structurally limited, strategically designed sabbaticals may be the most powerful form of professional investment available: they communicate that educators' growth, questions, and whole personhood matter.
+
+## THE CONCEPTUAL FRAMEWORKS (in accessible terms)
+**The Whole Educator Framework (Roche Center for Catholic Education, Boston College):** Catholic schools describe students as whole persons created in the image of God (Imago Dei), developing across five interrelated domains — spiritual, cognitive, social, emotional, and physical. The same applies to the adults who teach them. A teacher under chronic stress (physical) struggles with classroom presence (social), creativity (cognitive), and vocational meaning (spiritual). Theological anchors: Imago Dei (each person's dignity), Magis (the call to greater purpose), Dios en Todo (God in all things), cura personalis (care for the whole person), and accompaniment as a pedagogical stance.
+
+**Professional Capital (Hargreaves & Fullan):** teaching excellence emerges from human capital (knowledge and skill), social capital (collaborative relationships and networks), and decisional capital (professional judgment developed through experience). The case proposes a fourth dimension for Catholic education: **spiritual capital** — faith formation, theological understanding, pastoral sensitivity, and vocational clarity — which animates and gives meaning to the other three.
+
+**Why sabbaticals, specifically:** unlike brief workshops targeting isolated skills, sabbaticals create extended space for integrated development across all dimensions simultaneously. Summer timing honors K-12 rhythms — no classroom coverage problems, genuinely restorative time. And sabbaticals are counter-cultural in the best sense: in a landscape of productivity metrics, they declare institutional commitment to contemplation, renewal, and the long view of vocation.
+
+**Four design principles:** Intentionality (clear learning objectives, preparatory work, commitment to integration); Integration (multiple dimensions of formation at once); Reciprocity (clear expectations to share learning with colleagues and enhance curriculum — individual renewal generating collective benefit); Sustainability (diverse funding, transparent selection, a culture that normalizes sabbaticals as institutional identity).
+
+## FOR SCHOOLS CONSIDERING A SIMILAR PROGRAM
+- **Cost realism:** a summer sabbatical typically runs $2,000-$10,000 all-in. Against turnover costs exceeding $25,000 per departing teacher, the investment is not merely justifiable but prudent.
+- **Funding paths:** dedicated endowments inviting donors into educator formation; building sabbaticals into the annual budget as expected infrastructure; foundation support from philanthropies focused on Catholic educator retention.
+- **Right-sizing:** a small school might offer one substantial sabbatical every three years; tiered options (full, mid-level, and mini-sabbaticals); or a consortium of small schools pooling a shared, competitively awarded fund. Approximate justice within reach beats perfect justice indefinitely deferred.
+- **Partnerships:** Catholic universities (often with reduced or waived tuition for K-12 Catholic educators); religious order networks (Augustinian, Jesuit, Franciscan, Dominican) offering housing, spiritual direction, and charism immersion at modest cost; professional associations and cultural institutions with fellowships and summer institutes.
+- **Equity vigilance:** selection should span career stages and disciplines, avoiding concentration among senior faculty in favored departments — with transparent criteria recognizing different forms of excellence. Robust alternative professional development for non-recipients prevents a two-tier culture.
+- **Stakeholder formation:** leaders, boards, and families may initially see sabbaticals as expensive perks. Sharing stories of vocational renewal, retention data, and recipient presentations builds the cultural foundation that sustains commitment through lean years.
+
+## THE DEEPER ARGUMENT
+Sabbatical programs are institutional declarations of educational philosophy made concrete through resource allocation. When a Catholic school invests in extended formation honoring educators' full humanity — intellectual curiosity, spiritual searching, relational needs, embodied experience — it enacts the same anthropology it professes for students. Sabbaticals incarnate Imago Dei, cura personalis, Magis, and accompaniment; they replace the transactional logic of compliance training with sustained formation that recognizes teaching as sacred work requiring periodic withdrawal for the sake of return. As the case concludes: "The educators in our schools carry the sacred work of forming young people in wisdom, virtue, and faith. They deserve our most generous investment."
+
+## THE CASE STUDY TRILOGY
+The digital case study features three teachers whose stories together illustrate the program's core principles: Stephanie Choate's Globe Theatre sabbatical exemplifies Intentionality; Eric Smith's Rome pilgrimage exemplifies Integration (faith, intellect, and vocation woven together); and Katie Clark's Broadway immersion exemplifies Immersion and Transformation. All three embody Reciprocity and Sustainability — sharing what they learned with colleagues, students, and the wider community.
+
+## RESEARCH CONTEXT
+This multimedia case study is a collaboration between Austin Prep and Boston College's Lynch School of Education and Human Development — the Roche Center for Catholic Education and the Transformative Education Lab. It was developed by William R. Driscoll, Ed.D. (Dean of Faculty at Austin Prep), drawing on the Roche Center for Catholic Education's Whole Educator scholarship (Wyttenbach and colleagues) and professional capital theory (Hargreaves & Fullan). The two 2025 case studies are presented at conferences with the featured Austin Prep educators as co-presenters. Related scholarship includes work on Catholic teacher retention (Squillini; Scheopner; Tamir; Fussell & Cole), formation programs (UCCE; ACE Collaborative; LEAD; the Australian Catholic School Formation Index), and whole-person adult formation (Chandler; Stache; Sultmann, Lamb & Hall).
 `;
 
 /* ═══════════════════════════════════════════════════════════
-   PHASES CONFIGURATION
+   PHASE DEFINITIONS
 ═══════════════════════════════════════════════════════════ */
 const PHASES = [
   {
     name: "Encounter",
-    card: "<strong>Encounter</strong> — Meet the Summer Sabbatical Program. What is it, where did it come from, and what draws you in?",
-    greeting: "I'm your thought partner for exploring the <strong>Summer Sabbatical Program at Austin Preparatory School</strong> — a decade-long investment in teachers as whole persons, from Shakespeare's Globe to the Vatican to Broadway. Ask me anything about how the program works, the journeys teachers have taken, and why it matters for students, for the school, and for Catholic education.",
+    desc: "<strong>Encounter</strong> — Meet the Summer Sabbatical Program. What is it, where did it come from, and what draws you in?",
     prompts: [
       "What is the Summer Sabbatical Program and how does it work?",
       "What kinds of projects have teachers pursued since 2016?",
@@ -556,35 +691,32 @@ const PHASES = [
   },
   {
     name: "Examine",
-    card: "<strong>Examine</strong> — Look closely at specific sabbatical projects, the application structure, and the reciprocity required of recipients.",
-    greeting: "Let's examine the details. We can explore individual teacher stories — like Stephanie Choate at the Globe, Roger Stone in Italy, or Leeann Blais's literacy project — or look at the mechanics: the grant application, the $3,500 budget, or the two-year return commitment.",
+    desc: "<strong>Examine</strong> — Look closely at how sabbaticals transform teachers, from the Rome pilgrimage to the Broadway immersion.",
     prompts: [
-      "Tell me about Stephanie Choate's Globe Theatre sabbatical.",
-      "How did Roger Stone's Italy sabbatical reflect his 50 years at Austin Prep?",
-      "What are the step-by-step requirements to apply for a grant?",
-      "What is expected of a teacher after they return from sabbatical?"
+      "Tell me about Eric Smith's Rome sabbatical during Pope Leo XIV's election",
+      "How did Katie Clark's Broadway sabbatical transform the drama program?",
+      "What is the Whole Educator Framework, in plain terms?",
+      "What does the school ask of teachers when they return?"
     ]
   },
   {
     name: "Envision",
-    card: "<strong>Envision</strong> — Imagine what a sabbatical program like this could mean for your school, your department, or your own teaching.",
-    greeting: "Now let's imagine possibility. If you're an educator, what critical question would drive your sabbatical proposal? If you're a school leader or board member, how could a program like this transform your faculty culture and donor engagement?",
+    desc: "<strong>Envision</strong> — Imagine the ripple effects: for students, for school culture, and for your own community.",
     prompts: [
-      "How could I frame a sabbatical proposal around a 'critical question'?",
-      "What advice would you give an applicant drafting a proposal?",
-      "How does a sabbatical program impact teacher retention and morale?",
-      "How can a school build donors' support for teacher sabbaticals?"
+      "How do students benefit when their teacher takes a sabbatical?",
+      "What does the program cost, and is it a wise investment?",
+      "How could a school with a smaller budget start something like this?",
+      "How does this help Austin Prep keep great teachers?"
     ]
   },
   {
     name: "Commit",
-    card: "<strong>Commit</strong> — Move from ideas to action. What are the key takeaways, and what steps come next?",
-    greeting: "Let's bring this home to action. Whether you are preparing to write a proposal, considering introducing a sabbatical model at your school, or looking to support teacher formation, let's synthesize what you've learned into concrete next steps.",
+    desc: "<strong>Commit</strong> — Identify what you'll carry forward as a supporter, advocate, or builder of something similar.",
     prompts: [
-      "What are the top 3 takeaways from Austin Prep's 10-year experience?",
-      "How can another K-12 school adapt this summer sabbatical model?",
-      "What makes this program a model of Augustinian pedagogy in practice?",
-      "Summarize our conversation into key insights I can share with colleagues."
+      "How can I support the sabbatical program at Austin Prep?",
+      "What should I share with others about this program?",
+      "How might my school adapt Austin Prep's model?",
+      "Help me reflect on what I've learned from this case."
     ]
   }
 ];
@@ -592,78 +724,190 @@ const PHASES = [
 /* ═══════════════════════════════════════════════════════════
    APP STATE
 ═══════════════════════════════════════════════════════════ */
+/* PROXY ENDPOINT — updated to relative API route */
+const PROXY_URL = '/api/chat';
+
+let messages = [];
 let currentPhase = 0;
-let currentRole = "member of the Austin Prep faculty or staff";
-let messages = []; // Chat history array formatted for Gemini API proxy
+let currentRole = 'member of the Austin Prep faculty or staff';
+let isLoading = false;
 
 /* ═══════════════════════════════════════════════════════════
-   DOM ELEMENTS
+   DOM REFS
 ═══════════════════════════════════════════════════════════ */
-const splashEl = document.getElementById('splash');
-const btnBegin = document.getElementById('btn-begin');
-const phaseBar = document.getElementById('phase-bar');
-const phaseCard = document.getElementById('phase-card');
-const roleBar = document.getElementById('role-bar');
-const chatContainer = document.getElementById('chat-container');
-const userInput = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
-const btnSave = document.getElementById('btn-save');
-const btnReset = document.getElementById('btn-reset');
-const saveToast = document.getElementById('save-toast');
+const splash      = document.getElementById('splash');
+const btnBegin    = document.getElementById('btn-begin');
+const chatEl      = document.getElementById('chat-container');
+const userInput   = document.getElementById('user-input');
+const sendBtn     = document.getElementById('send-btn');
+const phaseCard   = document.getElementById('phase-card');
+const saveToast   = document.getElementById('save-toast');
 
 /* ═══════════════════════════════════════════════════════════
-   SYSTEM PROMPT GENERATOR
+   SPLASH
 ═══════════════════════════════════════════════════════════ */
-function buildSystemPrompt() {
-  const phase = PHASES[currentPhase];
-  return `You are "Thought Partner," an AI conversational guide for the Austin Preparatory School Summer Sabbatical Program case study, created in collaboration with the Roche Center for Catholic Education at Boston College.
+btnBegin.addEventListener('click', () => {
+  splash.classList.add('hidden');
+  initChat();
+});
 
-USER CONTEXT:
-- Current Phase: ${phase.name} (${phase.card.replace(/<[^>]*>/g, '')})
-- User Role: ${currentRole}
+/* ═══════════════════════════════════════════════════════════
+   PHASE & ROLE CONTROLS
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.phase-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPhase = +btn.dataset.phase;
+    updatePhaseCard();
+  });
+});
 
-YOUR MISSION & TONAL GUIDELINES:
-1. Act as a warm, articulate, intellectually engaged thought partner — reflective of Augustinian pedagogy (Veritas, Unitas, Caritas).
-2. Answer the user's questions grounded deeply in the provided source knowledge below.
-3. Tailor your tone and examples to the user's selected role (${currentRole}).
-4. Keep responses concise, clear, and well-structured (use short paragraphs or bullet points where helpful). Avoid overly long essays unless explicitly requested.
-5. End responses when appropriate with an inviting follow-up question that encourages deeper reflection in line with the current phase (${phase.name}).
+document.querySelectorAll('.role-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentRole = chip.dataset.role;
+  });
+});
 
-SOURCE KNOWLEDGE:
-${AP_KNOWLEDGE}`;
+function updatePhaseCard() {
+  const p = PHASES[currentPhase];
+  phaseCard.innerHTML = `${p.desc}`;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   API INTERACTION
+   INIT CHAT
+═══════════════════════════════════════════════════════════ */
+function initChat() {
+  updatePhaseCard();
+  messages = [];
+  chatEl.innerHTML = '';
+
+  const p = PHASES[currentPhase];
+  const welcomeCard = document.createElement('div');
+  welcomeCard.className = 'welcome-card';
+  welcomeCard.innerHTML = `
+    <h2>Welcome</h2>
+    <p>I'm your thought partner for exploring the <strong>Summer Sabbatical Program at Austin Preparatory School</strong> — a decade-long investment in teachers as whole persons, from Shakespeare's Globe to the Vatican to Broadway. Ask me anything about how the program works, the journeys teachers have taken, and why it matters for students, for the school, and for Catholic education.</p>
+    <div class="prompt-chips">
+      ${p.prompts.map(q => `<button class="prompt-chip">${q}</button>`).join('')}
+    </div>
+  `;
+  chatEl.appendChild(welcomeCard);
+
+  welcomeCard.querySelectorAll('.prompt-chip').forEach(chip => {
+    chip.addEventListener('click', () => sendMessage(chip.textContent));
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDERING
+═══════════════════════════════════════════════════════════ */
+function renderMessage(role, content) {
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+  const avatar = role === 'assistant' ? 'TP' : 'You';
+  const html = formatMarkdown(content);
+  msg.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div class="msg-bubble">${html}</div>
+  `;
+  chatEl.appendChild(msg);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return msg;
+}
+
+function formatMarkdown(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^## (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^# (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[uol]|<p)(.+)$/gm, '<p>$1</p>')
+    .replace(/<p><\/p>/g, '');
+}
+
+function showTyping() {
+  const typing = document.createElement('div');
+  typing.className = 'msg assistant';
+  typing.id = 'typing';
+  typing.innerHTML = `
+    <div class="msg-avatar">TP</div>
+    <div class="msg-bubble">
+      <div class="typing-dots"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  chatEl.appendChild(typing);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SYSTEM PROMPT
+═══════════════════════════════════════════════════════════ */
+function buildSystemPrompt() {
+  const phaseName = PHASES[currentPhase].name;
+  return `You are Thought Partner, a warm and knowledgeable AI companion embedded in a digital case study about the Summer Sabbatical Program at Austin Preparatory School — an independent Catholic day school in the Augustinian tradition serving grades 6-12 in Reading, Massachusetts. The case study is presented in an ArcGIS StoryMap titled "Austin Preparatory School's Summer Sabbaticals: Transformative Formation for Catholic Educators," developed in collaboration with the Roche Center for Catholic Education at Boston College's Lynch School of Education and Human Development.
+
+The user is a ${currentRole}, currently in the "${phaseName}" phase of the case study.
+
+Your role is to:
+1. Help the user understand the Summer Sabbatical Program — its history since 2016, how it works (application, selection, funding, and the expectations when teachers return), and its impact on teachers, students, and school culture
+2. Bring the sabbatical journeys to life — the decade of projects, the 2024 literary road trip, the Rome pilgrimage during Pope Leo XIV's election, and the Broadway immersion — using the community's own words
+3. Connect the program to its deeper foundations — the Whole Educator Framework, professional capital, and the Augustinian and Catholic vision of the whole person — in plain, welcoming language
+4. Tailor reflection to the user's role: a parent may wonder what this means for their child's classroom; a board member or donor may weigh stewardship and return on investment; a prospective teacher may be gauging the culture they would be joining — for them, emphasize that Austin Prep thinks about teacher growth as vocation, not just skill acquisition; an educator from another school may want to build something similar
+5. Be a genuine thought partner — conversational and curious, not a lecture bot
+
+Audience note: users range from parents and prospective donors to trustees and visiting educators. Default to warm, jargon-free language, and go deeper into research and theory only when the user signals interest. When discussing money, be candid and concrete: grants up to $3,500, roughly $7,000-$10,000 budgeted annually, weighed against turnover costs exceeding $25,000 per departing teacher.
+
+Draw only on the following knowledge base. Do not fabricate projects, people, quotes, or data not described here. If asked something outside the knowledge base (e.g., admissions, athletics, tuition), briefly note that it's beyond this case study and point the user to austinprep.org.
+
+${AP_KNOWLEDGE}
+
+Tone: warm, hopeful, intellectually engaged, grounded in Catholic educational tradition without being preachy. Be concise but substantive — typically 2-4 short paragraphs unless the question calls for a structured list. End most responses with one inviting follow-up question suited to the user's role and the current phase.
+
+Respond in English.`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEND MESSAGE (UPDATED FOR GEMINI COMPATIBILITY)
 ═══════════════════════════════════════════════════════════ */
 async function sendMessage(text) {
-  if (!text.trim()) return;
+  if (!text.trim() || isLoading) return;
+  isLoading = true;
+  sendBtn.disabled = true;
 
   renderMessage('user', text);
   messages.push({ role: 'user', content: text });
-
   userInput.value = '';
   userInput.style.height = 'auto';
+
   showTyping();
 
   try {
-    // FORMATTED FOR GEMINI API PROXY BACKEND (/api/chat)
-    const geminiContents = [
-      { role: 'user', parts: [{ text: buildSystemPrompt() }] },
-      { role: 'model', parts: [{ text: "Understood. I am ready to act as Thought Partner using the provided case study context." }] }
-    ];
+    // Format contents specifically for Gemini API (user / model)
+    const geminiContents = messages.map(msg => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }]
+    }));
 
-    messages.forEach(msg => {
-      geminiContents.push({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }]
-      });
-    });
-
-    const response = await fetch('/api/chat', {
+    const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: geminiContents })
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
+        contents: geminiContents
+      })
     });
 
     if (!response.ok) {
@@ -673,14 +917,14 @@ async function sendMessage(text) {
 
     const data = await response.json();
     
-    // Parse response structure from Gemini API proxy
+    // Flexible parsing to support both Gemini response formats and proxy standard responses
     let assistantText = '';
     if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
       assistantText = data.candidates[0].content.parts[0].text;
     } else if (data.content && data.content[0]?.text) {
       assistantText = data.content[0].text;
     } else {
-      assistantText = "I received a response, but couldn't parse the text formatting.";
+      assistantText = "I received a response, but could not parse the format properly.";
     }
 
     messages.push({ role: 'assistant', content: assistantText });
@@ -690,122 +934,19 @@ async function sendMessage(text) {
   } catch (err) {
     removeTyping();
     renderMessage('assistant', `⚠️ Something went wrong: ${err.message}. Please try again in a moment.`);
+  } finally {
+    isLoading = false;
+    sendBtn.disabled = false;
+    userInput.focus();
   }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   UI RENDER FUNCTIONS
+   INPUT CONTROLS
 ═══════════════════════════════════════════════════════════ */
-function renderMessage(role, text) {
-  const msgDiv = document.createElement('div');
-  msgDiv.className = `msg ${role}`;
-
-  const avatar = document.createElement('div');
-  avatar.className = 'msg-avatar';
-  avatar.textContent = role === 'assistant' ? 'TP' : 'You';
-
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  bubble.innerHTML = formatMarkdown(text);
-
-  msgDiv.appendChild(avatar);
-  msgDiv.appendChild(bubble);
-  chatContainer.appendChild(msgDiv);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function showWelcomeMessage() {
-  chatContainer.innerHTML = '';
-  const phase = PHASES[currentPhase];
-
-  const welcomeDiv = document.createElement('div');
-  welcomeDiv.className = 'welcome-card';
-  welcomeDiv.innerHTML = `
-    <h2>Phase ${currentPhase + 1}: ${phase.name}</h2>
-    <p>${phase.greeting}</p>
-    <div class="prompt-chips">
-      ${phase.prompts.map(p => `<button class="prompt-chip" onclick="handlePromptClick('${escapeHtml(p)}')">${p}</button>`).join('')}
-    </div>
-  `;
-  chatContainer.appendChild(welcomeDiv);
-}
-
-function showTyping() {
-  removeTyping();
-  const typingDiv = document.createElement('div');
-  typingDiv.className = 'msg assistant';
-  typingDiv.id = 'typing-indicator';
-  typingDiv.innerHTML = `
-    <div class="msg-avatar">TP</div>
-    <div class="msg-bubble">
-      <div class="typing-dots"><span></span><span></span><span></span></div>
-    </div>
-  `;
-  chatContainer.appendChild(typingDiv);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-}
-
-function removeTyping() {
-  const indicator = document.getElementById('typing-indicator');
-  if (indicator) indicator.remove();
-}
-
-function updatePhase(index) {
-  currentPhase = index;
-  document.querySelectorAll('.phase-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', i === index);
-  });
-  phaseCard.innerHTML = PHASES[index].card;
-  showWelcomeMessage();
-}
-
-/* ═══════════════════════════════════════════════════════════
-   HELPER UTILITIES
-═══════════════════════════════════════════════════════════ */
-function formatMarkdown(text) {
-  if (!text) return '';
-  let html = text
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br/>');
-  return `<p>${html}</p>`;
-}
-
-function escapeHtml(str) {
-  return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-}
-
-function handlePromptClick(promptText) {
-  sendMessage(promptText);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   EVENT LISTENERS
-═══════════════════════════════════════════════════════════ */
-btnBegin.addEventListener('click', () => {
-  splashEl.classList.add('hidden');
-});
-
-phaseBar.addEventListener('click', (e) => {
-  if (e.target.classList.contains('phase-btn')) {
-    const phaseIdx = parseInt(e.target.dataset.phase, 10);
-    updatePhase(phaseIdx);
-  }
-});
-
-roleBar.addEventListener('click', (e) => {
-  if (e.target.classList.contains('role-chip')) {
-    document.querySelectorAll('.role-chip').forEach(c => c.classList.remove('active'));
-    e.target.classList.add('active');
-    currentRole = e.target.dataset.role;
-  }
-});
-
 sendBtn.addEventListener('click', () => sendMessage(userInput.value));
 
-userInput.addEventListener('keydown', (e) => {
+userInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     sendMessage(userInput.value);
@@ -817,26 +958,26 @@ userInput.addEventListener('input', () => {
   userInput.style.height = Math.min(userInput.scrollHeight, 140) + 'px';
 });
 
-btnReset.addEventListener('click', () => {
-  messages = [];
-  showWelcomeMessage();
-});
-
-btnSave.addEventListener('click', () => {
-  if (messages.length === 0) return;
-  const content = messages.map(m => `${m.role.toUpperCase()}:\n${m.content}\n`).join('\n---\n\n');
-  const blob = new Blob([content], { type: 'text/plain' });
+/* ═══════════════════════════════════════════════════════════
+   SAVE & RESET
+═══════════════════════════════════════════════════════════ */
+document.getElementById('btn-save').addEventListener('click', () => {
+  if (!messages.length) return;
+  const txt = messages.map(m => `[${m.role.toUpperCase()}]\n${m.content}`).join('\n\n---\n\n');
+  const blob = new Blob([txt], { type: 'text/plain' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `AustinPrep_ThoughtPartner_Conversation.txt`;
+  a.download = `thought-partner-conversation-${new Date().toISOString().slice(0,10)}.txt`;
   a.click();
-
   saveToast.classList.add('show');
   setTimeout(() => saveToast.classList.remove('show'), 2500);
 });
 
-/* INITIALIZE APP */
-updatePhase(0);
+document.getElementById('btn-reset').addEventListener('click', () => {
+  if (!messages.length || confirm('Start a new conversation?')) {
+    initChat();
+  }
+});
 </script>
 </body>
 </html>
